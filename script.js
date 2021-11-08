@@ -37,8 +37,10 @@ Hero.prototype.stop = function() {
 }
 
 Hero.prototype.jump = function() {
-    this.gravity = -20;
-    isDown = false;
+    if (isDown == true) {
+        this.gravity = -20;
+        isDown = false;
+    }
 }
 
 Hero.prototype.collision = function() {
@@ -54,6 +56,9 @@ Hero.prototype.collision = function() {
     if (this.y + this.height > height) {
         this.y = height - this.height;
         this.gravity = 0;
+        if (isDown == false) {
+            isDown = true;
+        }
     }
 }
 
@@ -99,9 +104,6 @@ function draw() {
             hero.height
         );
     }
-
-    console.log(hero.gravity + "AAAAAAAAAA");
-    console.log(hero.gravitySpeed);
 }
 
 function loop() {
@@ -116,9 +118,7 @@ loop();
 window.addEventListener('keydown', (e) => {
     switch (e.key) {
         case 'w':
-            if (isDown == true) {
-                hero.jump();
-            }
+            hero.jump();
             break;
         case 'a':
             hero.move(-1);
@@ -131,8 +131,5 @@ window.addEventListener('keydown', (e) => {
 });
 
 window.addEventListener('keyup', (e) => {   
-    if (e.key == 'w') {
-        isDown = true;
-    }
     hero.stop();
 });
