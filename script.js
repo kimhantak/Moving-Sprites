@@ -196,7 +196,6 @@ window.addEventListener('keydown', (e) => {
 }, true);
 
 window.addEventListener('keyup', (e) => { 
-    keyID = null;
     if (e.key == 'w') {
         hero.enableJump();
     } 
