@@ -62,15 +62,15 @@ Hero.prototype.jump = function() {
     }
 }
 
-Hero.prototype.isJump = function () {
+Hero.prototype.execjumpSprite = function () {
     if (this.isDown == false) {
-        if (this.gravity == this.jumpHeight) {
+        if (this.gravity <= -15) {
             this.scene = 3;
-        } else if (this.gravity >= -5 && this.gravity <= 0) {
+        } else if (this.gravity <= -5) {
             this.scene = 4;
-        } else if (this.gravity > 5) {
+        } else if (this.gravity < 0) {
             this.scene = 5;
-        }
+        } 
     }   
 }
 
@@ -81,7 +81,7 @@ Hero.prototype.collision = function() {
     }
     for (let i = 0; i < level.length; i++) {
         if ((heroPos.x >= level[i].x && heroPos.x <= level[i].x+level[i].width) 
-            && (this.y + this.height <= level[i].y+10 && this.y + this.height >= level[i].y-10)) {
+            && (this.y + this.height <= level[i].y+42 && this.y + this.height >= level[i].y-10)) {
             if (0 < this.gravity) {
                 this.y = level[i].y - this.height;
                 this.gravity = 0;
@@ -167,6 +167,7 @@ function loop() {
     hero.execGravity();
     hero.mapCollision();
     hero.collision();
+    hero.execjumpSprite();
     draw();
     requestAnimationFrame(loop);
 }
