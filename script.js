@@ -12,10 +12,7 @@ var sprites;
 var grass;
 var hero;
 var multikey = {};
-
 var pos = 2;
-
-var keyID;
 
 function Hero(scene, x, y, width, height, speed, jumpHeight, gravity, gravitySpeed, direction) {
     this.scene = scene;
@@ -164,6 +161,23 @@ function draw() {
             hero.height
         );
     }
+
+    if (multikey['w'] && multikey['a']) {
+        hero.jump();
+        hero.disableJump();
+        hero.move(-1);
+    } else if (multikey['w'] && multikey['d']) {
+        hero.jump();
+        hero.disableJump();
+        hero.move(1);
+    } else if (multikey['w']) {
+        hero.jump();
+        hero.disableJump();
+    } else if (multikey['a']) {
+        hero.move(-1);
+    } else if (multikey['d']) {
+        hero.move(1);
+    }
 }
 
 function loop() {
@@ -177,34 +191,15 @@ function loop() {
 
 loop();
 
-window.addEventListener('keypress', (e) => {
+window.addEventListener('keydown', (e) => {
     multikey[e.key] = true;
-    keyID = setInterval(() => {
-        if (multikey['w'] && multikey['a']) {
-            hero.jump();
-            hero.disableJump();
-            hero.move(-1);
-        } else if (multikey['w'] && multikey['d']) {
-            hero.jump();
-            hero.disableJump();
-            hero.move(1);
-        } else if (multikey['w']) {
-            hero.jump();
-            hero.disableJump();
-        } else if (multikey['a']) {
-            hero.move(-1);
-        } else if (multikey['d']) {
-            hero.move(1);
-        }
-    }, 200);
-});
+}, true);
 
 window.addEventListener('keyup', (e) => { 
-    clearInterval(keyID);
     keyID = null;
     if (e.key == 'w') {
         hero.enableJump();
     } 
     hero.stop();
     multikey = {};
-});
+}, true);
