@@ -7,6 +7,7 @@ var background;
 var sprites;
 var hero;
 var pos = 2;
+var timeJump = 0;
 
 function Hero(scene, x, y, width, height, speed, gravity, gravitySpeed, direction = 0) {
     this.scene = scene;
@@ -36,7 +37,7 @@ Hero.prototype.stop = function() {
 }
 
 Hero.prototype.jump = function() {
-    this.gravitySpeed *= -1;
+    this.gravitySpeed = -1;
 }
 
 Hero.prototype.collision = function() {
@@ -45,6 +46,10 @@ Hero.prototype.collision = function() {
     }
     if (this.x + this.width > width) {
         this.x = width - this.width;
+    }
+    if (this.y < 0) {
+        this.y = 0;
+        this.gravity = -height;
     }
     if (this.y + this.height > height) {
         this.y = height - this.height;
@@ -57,7 +62,7 @@ Hero.prototype.execGravity = function() {
     this.y += this.gravity;
 }
 
-hero = new Hero(0, 0, 0, 36, 42, 5, 0, 0.25, 1);
+hero = new Hero(0, 0, 0, 36, 42, 5, 0, 1, 1);
 
 background = new Image();
 background.src = 'assets/background.png';
@@ -97,8 +102,8 @@ function draw() {
 }
 
 function loop() {
-    hero.collision();
     hero.execGravity();
+    hero.collision();
     draw();
     requestAnimationFrame(loop);
 }
@@ -122,7 +127,8 @@ window.addEventListener('keydown', (e) => {
 
 window.addEventListener('keyup', (e) => {   
     if (e.key == 'w') {
-        hero.gravitySpeed *= -1;
+        hero.gravitySpeed = 1;
+        hero.gravity = 0;
     }
     hero.stop();
 });
