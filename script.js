@@ -9,13 +9,14 @@ var hero;
 var pos = 2;
 var isDown = true;
 
-function Hero(scene, x, y, width, height, speed, gravity, gravitySpeed, direction = 0) {
+function Hero(scene, x, y, width, height, speed, jumpSpeed, gravity, gravitySpeed, direction = 0) {
     this.scene = scene;
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
     this.speed = speed;
+    this.jumpSpeed = jumpSpeed;
     this.gravity = gravity;
     this.gravitySpeed = gravitySpeed;
     this.direction = direction;
@@ -38,7 +39,7 @@ Hero.prototype.stop = function() {
 
 Hero.prototype.jump = function() {
     if (isDown == true) {
-        this.gravity = -20;
+        this.gravity = this.jumpSpeed;
         isDown = false;
     }
 }
@@ -62,12 +63,29 @@ Hero.prototype.collision = function() {
     }
 }
 
+Hero.prototype.isJump = function () {
+    // jump scene
+    if (isDown == false) {
+        if (this.gravity == this.jumpSpeed) {
+            this.scene = 3;
+        } else if (this.gravity >= -5 && this.gravity <= 0) {
+            this.scene = 4;
+        } else if (this.gravity > 5) {
+            this.scene = 5;
+        }
+        if (this.gravity == -this.jumpSpeed-1) {
+            this.scene = 0;
+        }
+    }
+}
+
 Hero.prototype.execGravity = function() {
+    this.isJump();
     this.gravity += this.gravitySpeed;
     this.y += this.gravity;
 }
 
-hero = new Hero(0, 0, 0, 36, 42, 5, 0, 1, 1);
+hero = new Hero(0, 0, 0, 36, 42, 5, -20, 0, 1, 1);
 
 background = new Image();
 background.src = 'assets/background.png';
