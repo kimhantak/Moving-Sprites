@@ -36,7 +36,7 @@ Hero.prototype.stop = function() {
 }
 
 Hero.prototype.jump = function() {
-
+    this.gravitySpeed *= -1;
 }
 
 Hero.prototype.collision = function() {
@@ -108,6 +108,7 @@ loop();
 window.addEventListener('keydown', (e) => {
     switch (e.key) {
         case 'w':
+            hero.jump();
             break;
         case 'a':
             hero.move(-1);
@@ -119,6 +120,9 @@ window.addEventListener('keydown', (e) => {
     }
 });
 
-window.addEventListener('keyup', (e) => {
+window.addEventListener('keyup', (e) => {   
+    if (e.key == 'w') {
+        hero.gravitySpeed *= -1;
+    }
     hero.stop();
 });
