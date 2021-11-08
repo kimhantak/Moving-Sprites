@@ -75,21 +75,19 @@ Hero.prototype.isJump = function () {
 }
 
 Hero.prototype.collision = function() {
-// let heroPos = {
-    //     x: this.x + Math.floor(this.width/2),
-    //     y: this.y + this.height
-    // }
-
-    // if ((heroPos.x >= field[0].x && heroPos.x <= field[0].x+field[0].width) 
-    //     && (this.y + this.height <= field[0].y+10 && this.y + this.height >= field[0].y-10)) {
-    //     if (isDown == false && 0 < this.gravity) {
-    //         this.y = field[0].y - this.height;
-    //         this.gravity = 0;
-    //     }
-    // }
-    // for (let i = 0; i < field.length; i++) {
-        
-    // }
+    let heroPos = {
+        x: this.x + Math.floor(this.width/2),
+        y: this.y + this.height
+    }
+    for (let i = 0; i < level.length; i++) {
+        if ((heroPos.x >= level[i].x && heroPos.x <= level[i].x+level[i].width) 
+            && (this.y + this.height <= level[i].y+10 && this.y + this.height >= level[i].y-10)) {
+            if (0 < this.gravity) {
+                this.y = level[i].y - this.height;
+                this.gravity = 0;
+            }
+        } 
+    }
 }
 
 Hero.prototype.mapCollision = function() {
@@ -105,7 +103,6 @@ Hero.prototype.mapCollision = function() {
     if (this.y + this.height > height) {
         this.y = height - this.height;
         this.gravity = 0;
-        this.enableJump();
     }
 }
 
@@ -176,7 +173,7 @@ function loop() {
 
 loop();
 
-window.addEventListener('keydown', (e) => {
+window.addEventListener('keypress', (e) => {
     switch (e.key) {
         case 'w':
             hero.jump();
@@ -192,6 +189,9 @@ window.addEventListener('keydown', (e) => {
     }
 });
 
-window.addEventListener('keyup', (e) => {   
+window.addEventListener('keyup', (e) => {  
+    if (e.key == 'w') {
+        hero.enableJump();
+    } 
     hero.stop();
 });
