@@ -6,24 +6,34 @@ const width = canvas.width = window.innerWidth;
 const height = canvas.height = window.innerHeight;
 
 var level = [];
+var init = [];
 var background;
 var sprites;
 var grass;
 var hero;
-var pos = 2;
-var isDown = true;
 
-function Hero(scene, x, y, width, height, speed, jumpSpeed, gravity, gravitySpeed, direction = 0) {
+var pos = 2;
+
+function Hero(scene, x, y, width, height, speed, jumpHeight, gravity, gravitySpeed, direction) {
     this.scene = scene;
     this.x = x;
     this.y = y;
     this.width = width;
     this.height = height;
     this.speed = speed;
-    this.jumpSpeed = jumpSpeed;
+    this.jumpHeight = jumpHeight;
     this.gravity = gravity;
     this.gravitySpeed = gravitySpeed;
     this.direction = direction;
+    this.isDown = true;
+}
+
+Hero.prototype.disableJump = function() {
+    this.isDown = false;
+} 
+
+Hero.prototype.enableJump = function() {
+    this.isDown = true;
 }
 
 Hero.prototype.move = function(direction) {
@@ -41,14 +51,48 @@ Hero.prototype.stop = function() {
     this.scene = 0;
 }
 
+Hero.prototype.execGravity = function() {
+    this.gravity += this.gravitySpeed;
+    this.y += this.gravity;
+}
+
 Hero.prototype.jump = function() {
-    if (isDown == true) {
-        this.gravity = this.jumpSpeed;
-        isDown = false;
+    if (this.isDown == true) {
+        this.gravity = this.jumpHeight;
     }
 }
 
-Hero.prototype.collision = function(field) {
+Hero.prototype.isJump = function () {
+    if (this.isDown == false) {
+        if (this.gravity == this.jumpHeight) {
+            this.scene = 3;
+        } else if (this.gravity >= -5 && this.gravity <= 0) {
+            this.scene = 4;
+        } else if (this.gravity > 5) {
+            this.scene = 5;
+        }
+    }   
+}
+
+Hero.prototype.collision = function() {
+// let heroPos = {
+    //     x: this.x + Math.floor(this.width/2),
+    //     y: this.y + this.height
+    // }
+
+    // if ((heroPos.x >= field[0].x && heroPos.x <= field[0].x+field[0].width) 
+    //     && (this.y + this.height <= field[0].y+10 && this.y + this.height >= field[0].y-10)) {
+    //     if (isDown == false && 0 < this.gravity) {
+    //         this.y = field[0].y - this.height;
+    //         this.gravity = 0;
+    //     }
+    // }
+    // for (let i = 0; i < field.length; i++) {
+        
+    // }
+}
+
+Hero.prototype.mapCollision = function() {
     if (this.x < 0) {
         this.x = 0;
     }
@@ -61,43 +105,8 @@ Hero.prototype.collision = function(field) {
     if (this.y + this.height > height) {
         this.y = height - this.height;
         this.gravity = 0;
-        if (isDown == false) {
-            isDown = true;
-        }
+        this.enableJump();
     }
-
-    let heroPos = {
-        x: this.x + Math.floor(this.width/2),
-        y: this.y + this.height
-    }
-    for (let i = 0; i < field.length; i++) {
-        if ( (heroPos.x >= field[i].x && heroPos.x <= field[i].x+field[i].width) 
-        || this.y + this.height == field[i].y) {
-            this.y = field[i].y - this.height;
-        }
-    }
-}
-
-Hero.prototype.isJump = function () {
-    // jump scene
-    if (isDown == false) {
-        if (this.gravity == this.jumpSpeed) {
-            this.scene = 3;
-        } else if (this.gravity >= -5 && this.gravity <= 0) {
-            this.scene = 4;
-        } else if (this.gravity > 5) {
-            this.scene = 5;
-        }
-        if (this.gravity == -this.jumpSpeed-1) {
-            this.scene = 0;
-        }
-    }
-}
-
-Hero.prototype.execGravity = function() {
-    this.isJump();
-    this.gravity += this.gravitySpeed;
-    this.y += this.gravity;
 }
 
 background = new Image();
@@ -110,8 +119,9 @@ sprites.onload = draw;
 grass = new Image();
 grass.src = 'assets/grass_8x1.png';
 
-level = Level["grass"];
-hero = new Hero(0, Level['hero'].x, Level['hero'].y, 36, 42, 5, -25, 0, 1, 1);
+level = Level['grass'];
+init = Level['hero'];
+hero = new Hero(0, init.x, init.y, 36, 42, 5, -25, 0, 1, 1);
 
 function draw() {
     ctx.drawImage(background, 0, 0, background.width, background.height, 0, 0, width, height);
@@ -158,7 +168,8 @@ function draw() {
 
 function loop() {
     hero.execGravity();
-    hero.collision(level);
+    hero.mapCollision();
+    hero.collision();
     draw();
     requestAnimationFrame(loop);
 }
@@ -169,6 +180,7 @@ window.addEventListener('keydown', (e) => {
     switch (e.key) {
         case 'w':
             hero.jump();
+            hero.disableJump();
             break;
         case 'a':
             hero.move(-1);

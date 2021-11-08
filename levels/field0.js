@@ -1,7 +1,7 @@
 const level = {
     "hero": {
-        x: 150,
-        y: 0
+        "x": 50,
+        "y": 722
     },
     "grass": [
         {
