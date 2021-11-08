@@ -1,11 +1,14 @@
+import { Level } from './levels/field0';
+
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 const width = canvas.width = window.innerWidth;
 const height = canvas.height = window.innerHeight;
 
-var level;
+var level = [];
 var background;
 var sprites;
+var grass;
 var hero;
 var pos = 2;
 var isDown = true;
@@ -45,7 +48,7 @@ Hero.prototype.jump = function() {
     }
 }
 
-Hero.prototype.collision = function() {
+Hero.prototype.collision = function(field) {
     if (this.x < 0) {
         this.x = 0;
     }
@@ -86,8 +89,6 @@ Hero.prototype.execGravity = function() {
     this.y += this.gravity;
 }
 
-hero = new Hero(0, 0, 0, 36, 42, 5, -25, 0, 1, 1);
-
 background = new Image();
 background.src = 'assets/background.png';
 
@@ -95,8 +96,27 @@ sprites = new Image();
 sprites.src = 'assets/hero.png';
 sprites.onload = draw;
 
+grass = new Image();
+grass.src = 'assets/grass_8x1.png';
+
+level = Level["grass"];
+hero = new Hero(0, Level['hero'].x, Level['hero'].y, 36, 42, 5, -25, 0, 1, 1);
+
 function draw() {
     ctx.drawImage(background, 0, 0, background.width, background.height, 0, 0, width, height);
+
+    for (let i = 0; i < level.length; i++) {
+        ctx.drawImage(grass, 
+            0, 
+            0, 
+            grass.width, 
+            grass.height, 
+            level[i].x, 
+            level[i].y, 
+            level[i].width, 
+            level[i].height
+        );
+    }
 
     if (hero.direction == -1) {
         ctx.scale(-1, 1);
@@ -127,7 +147,7 @@ function draw() {
 
 function loop() {
     hero.execGravity();
-    hero.collision();
+    hero.collision(level);
     draw();
     requestAnimationFrame(loop);
 }
