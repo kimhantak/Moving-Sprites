@@ -65,6 +65,17 @@ Hero.prototype.collision = function(field) {
             isDown = true;
         }
     }
+
+    let heroPos = {
+        x: this.x + Math.floor(this.width/2),
+        y: this.y + this.height
+    }
+    for (let i = 0; i < field.length; i++) {
+        if ( (heroPos.x >= field[i].x && heroPos.x <= field[i].x+field[i].width) 
+        || this.y + this.height == field[i].y) {
+            this.y = field[i].y - this.height;
+        }
+    }
 }
 
 Hero.prototype.isJump = function () {
