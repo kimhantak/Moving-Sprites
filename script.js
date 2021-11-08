@@ -40,9 +40,11 @@ Hero.prototype.move = function(direction) {
     this.direction = direction;
     this.x += this.speed*this.direction;
 
-    if (pos % 6 == 0) {
-        this.scene = this.scene++ % 2 + 1;
-        pos = 0;
+    if (this.isDown == true && this.gravity == 0) {
+        if (pos % 6 == 0) {
+            this.scene = this.scene++ % 2 + 1;
+            pos = 0;
+        }
     }
     pos += 2;
 }   
@@ -162,20 +164,14 @@ function draw() {
         );
     }
 
-    if (multikey['w'] && multikey['a']) {
+    if (multikey['w']) {
         hero.jump();
         hero.disableJump();
+    }
+    if (multikey['a']) {
         hero.move(-1);
-    } else if (multikey['w'] && multikey['d']) {
-        hero.jump();
-        hero.disableJump();
-        hero.move(1);
-    } else if (multikey['w']) {
-        hero.jump();
-        hero.disableJump();
-    } else if (multikey['a']) {
-        hero.move(-1);
-    } else if (multikey['d']) {
+    }
+    if (multikey['d']) {
         hero.move(1);
     }
 }
@@ -193,12 +189,12 @@ loop();
 
 window.addEventListener('keydown', (e) => {
     multikey[e.key] = true;
-}, true);
+}, false);
 
 window.addEventListener('keyup', (e) => { 
     if (e.key == 'w') {
         hero.enableJump();
     } 
     hero.stop();
-    multikey = {};
-}, true);
+    delete multikey[e.key];
+}, false);
