@@ -7,7 +7,7 @@ var background;
 var sprites;
 var hero;
 var pos = 2;
-var timeJump = 0;
+var isDown = true;
 
 function Hero(scene, x, y, width, height, speed, gravity, gravitySpeed, direction = 0) {
     this.scene = scene;
@@ -30,14 +30,15 @@ Hero.prototype.move = function(direction) {
         pos = 0;
     }
     pos += 2;
-}
+}   
 
 Hero.prototype.stop = function() {
     this.scene = 0;
 }
 
 Hero.prototype.jump = function() {
-    this.gravitySpeed = -1;
+    this.gravity = -20;
+    isDown = false;
 }
 
 Hero.prototype.collision = function() {
@@ -49,7 +50,6 @@ Hero.prototype.collision = function() {
     }
     if (this.y < 0) {
         this.y = 0;
-        this.gravity = -height;
     }
     if (this.y + this.height > height) {
         this.y = height - this.height;
@@ -99,6 +99,9 @@ function draw() {
             hero.height
         );
     }
+
+    console.log(hero.gravity + "AAAAAAAAAA");
+    console.log(hero.gravitySpeed);
 }
 
 function loop() {
@@ -113,7 +116,9 @@ loop();
 window.addEventListener('keydown', (e) => {
     switch (e.key) {
         case 'w':
-            hero.jump();
+            if (isDown == true) {
+                hero.jump();
+            }
             break;
         case 'a':
             hero.move(-1);
@@ -127,8 +132,7 @@ window.addEventListener('keydown', (e) => {
 
 window.addEventListener('keyup', (e) => {   
     if (e.key == 'w') {
-        hero.gravitySpeed = 1;
-        hero.gravity = 0;
+        isDown = true;
     }
     hero.stop();
 });
