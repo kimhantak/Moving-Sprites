@@ -3,6 +3,7 @@ const ctx = canvas.getContext('2d');
 const width = canvas.width = window.innerWidth;
 const height = canvas.height = window.innerHeight;
 
+var level;
 var background;
 var sprites;
 var hero;
@@ -85,7 +86,7 @@ Hero.prototype.execGravity = function() {
     this.y += this.gravity;
 }
 
-hero = new Hero(0, 0, 0, 36, 42, 5, -20, 0, 1, 1);
+hero = new Hero(0, 0, 0, 36, 42, 5, -25, 0, 1, 1);
 
 background = new Image();
 background.src = 'assets/background.png';
