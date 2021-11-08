@@ -11,8 +11,11 @@ var background;
 var sprites;
 var grass;
 var hero;
+var multikey = {};
 
 var pos = 2;
+
+var keyID;
 
 function Hero(scene, x, y, width, height, speed, jumpHeight, gravity, gravitySpeed, direction) {
     this.scene = scene;
@@ -40,7 +43,7 @@ Hero.prototype.move = function(direction) {
     this.direction = direction;
     this.x += this.speed*this.direction;
 
-    if (pos % 10 == 0) {
+    if (pos % 6 == 0) {
         this.scene = this.scene++ % 2 + 1;
         pos = 0;
     }
@@ -57,7 +60,7 @@ Hero.prototype.execGravity = function() {
 }
 
 Hero.prototype.jump = function() {
-    if (this.isDown == true) {
+    if (this.isDown == true && this.gravity == 0) {
         this.gravity = this.jumpHeight;
     }
 }
@@ -118,7 +121,7 @@ grass.src = 'assets/grass_8x1.png';
 
 level = Level['grass'];
 init = Level['hero'];
-hero = new Hero(0, init.x, init.y, 36, 42, 5, -25, 0, 1, 1);
+hero = new Hero(0, init.x, init.y, 36, 42, 6, -25, 0, 1, 1);
 
 function draw() {
     ctx.drawImage(background, 0, 0, background.width, background.height, 0, 0, width, height);
@@ -175,24 +178,33 @@ function loop() {
 loop();
 
 window.addEventListener('keypress', (e) => {
-    switch (e.key) {
-        case 'w':
+    multikey[e.key] = true;
+    keyID = setInterval(() => {
+        if (multikey['w'] && multikey['a']) {
             hero.jump();
             hero.disableJump();
-            break;
-        case 'a':
             hero.move(-1);
-            break;
-        case 'd':
+        } else if (multikey['w'] && multikey['d']) {
+            hero.jump();
+            hero.disableJump();
             hero.move(1);
-            break;
-        default:
-    }
+        } else if (multikey['w']) {
+            hero.jump();
+            hero.disableJump();
+        } else if (multikey['a']) {
+            hero.move(-1);
+        } else if (multikey['d']) {
+            hero.move(1);
+        }
+    }, 200);
 });
 
-window.addEventListener('keyup', (e) => {  
+window.addEventListener('keyup', (e) => { 
+    clearInterval(keyID);
+    keyID = null;
     if (e.key == 'w') {
         hero.enableJump();
     } 
     hero.stop();
+    multikey = {};
 });
