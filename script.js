@@ -17,7 +17,6 @@ var monsters = [];
 var hero;
 var multikey = {};
 var pos = 2;
-var mPos = 2;
 
 function Hero(scene, x, y, width, height, speed, jumpHeight, gravity, gravitySpeed, direction) {
     this.scene = scene;
@@ -123,16 +122,17 @@ function Monster(scene, x, y, width, height, speed, direction) {
     this.height = height;
     this.speed = speed;
     this.direction = direction;
+    this.mPos = 2;
 }
 
 Monster.prototype.autoMove = function() {
     this.x += this.speed*this.direction;
 
-     if (mPos % 18 == 0) {
+     if (this.mPos % 18 == 0) {
         this.scene = this.scene++ % 2 + 1;
-        mPos = 0;
+        this.mPos = 0;
     }
-    mPos += 2;
+    this.mPos += 2;
 }
 
 Monster.prototype.mapCollision = function() {
@@ -142,6 +142,16 @@ Monster.prototype.mapCollision = function() {
     } else if (this.x < this.minX) {
         this.x = this.minX;
         this.direction = -this.direction;
+    }
+}
+
+Monster.prototype.collideByHero = function() {
+    if (this.x < hero.x + hero.width &&
+        this.x + this.width > hero.x &&
+        this.y < hero.y + hero.height &&
+        this.height + this.y > hero.y) {
+        monsters.splice(monsters.indexOf(this), 1);
+    } else {
     }
 }
 
@@ -198,6 +208,7 @@ function drawMonster() {
         );
         monsters[i].autoMove();
         monsters[i].mapCollision();
+        monsters[i].collideByHero();
     }
 }
 
