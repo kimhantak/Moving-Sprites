@@ -22,28 +22,28 @@ const level = {
         {
             "x": 1000,
             "y": 350,
-            "width": 500,
+            "width": 250,
             "height": 42
         },
         // right grass 1
         {
-            "x": 1000,
+            "x": 1250,
             "y": 200,
-            "width": 500,
+            "width": 250,
             "height": 42
         },
         // left grass 2
         {
-            "x": 30,
+            "x": 280,
             "y": 350,
-            "width": 500,
+            "width": 250,
             "height": 42
         },
         // left grass 1
         {
             "x": 30,
             "y": 200,
-            "width": 500,
+            "width": 250,
             "height": 42
         },
         // center grass
@@ -147,21 +147,7 @@ const level = {
             "height": 42
         },
         {
-            "scene": 1,
-            "x": 1010,
-            "y": 158,
-            "width": 42,
-            "height": 42
-        },
-        {
             "scene": 0,
-            "x": 1150,
-            "y": 158,
-            "width": 42,
-            "height": 42
-        },
-        {
-            "scene": 4,
             "x": 1280,
             "y": 158,
             "width": 42,
@@ -169,35 +155,35 @@ const level = {
         },
         {
             "scene": 4,
-            "x": 1200,
+            "x": 1380,
+            "y": 158,
+            "width": 42,
+            "height": 42
+        },
+        {
+            "scene": 4,
+            "x": 1100,
             "y": 308,
             "width": 42,
             "height": 42
         },
         {
             "scene": 3,
-            "x": 1380,
+            "x": 1210,
             "y": 308,
             "width": 42,
             "height": 42
         },
         {
             "scene": 2,
-            "x": 35,
+            "x": 335,
             "y": 308,
             "width": 42,
             "height": 42
         },
         {
             "scene": 0,
-            "x": 100,
-            "y": 308,
-            "width": 42,
-            "height": 42
-        },
-        {
-            "scene": 1,
-            "x": 150,
+            "x": 400,
             "y": 308,
             "width": 42,
             "height": 42
@@ -233,13 +219,6 @@ const level = {
         {
             "scene": 1,
             "x": 150,
-            "y": 158,
-            "width": 42,
-            "height": 42
-        },
-        {
-            "scene": 0,
-            "x": 320,
             "y": 158,
             "width": 42,
             "height": 42
