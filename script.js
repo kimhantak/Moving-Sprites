@@ -13,9 +13,11 @@ var sprites;
 var grass;
 var decoration;
 var spider;
+var monsters = [];
 var hero;
 var multikey = {};
 var pos = 2;
+var mPos = 2;
 
 function Hero(scene, x, y, width, height, speed, jumpHeight, gravity, gravitySpeed, direction) {
     this.scene = scene;
@@ -44,7 +46,7 @@ Hero.prototype.move = function(direction) {
     this.x += this.speed*this.direction;
 
     if (this.isDown == true && this.gravity == 0) {
-        if (pos % 6 == 0) {
+        if (pos % 18 == 0) {
             this.scene = this.scene++ % 2 + 1;
             pos = 0;
         }
@@ -111,6 +113,38 @@ Hero.prototype.mapCollision = function() {
     }
 }
 
+function Monster(scene, x, y, width, height, speed, direction) {
+    this.scene = scene;
+    this.x = x;
+    this.minX = this.x-5;
+    this.maxX = this.x+245;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.speed = speed;
+    this.direction = direction;
+}
+
+Monster.prototype.autoMove = function() {
+    this.x += this.speed*this.direction;
+
+     if (mPos % 18 == 0) {
+        this.scene = this.scene++ % 2 + 1;
+        mPos = 0;
+    }
+    mPos += 2;
+}
+
+Monster.prototype.mapCollision = function() {
+    if (this.x + this.width > this.maxX) {
+        this.x = this.maxX - this.width;
+        this.direction = -this.direction;
+    } else if (this.x < this.minX) {
+        this.x = this.minX;
+        this.direction = -this.direction;
+    }
+}
+
 background = new Image();
 background.src = 'assets/background.png';
 
@@ -132,6 +166,10 @@ init = Level['hero'];
 decor = Level['decor'];
 
 hero = new Hero(0, init.x, init.y, 36, 42, 6, -25, 0, 1, 1);
+monsters.push(new Monster(0, 35, 168, 42, 32, 1, 1));
+monsters.push(new Monster(0, 285, 318, 42, 32, 2, 1));
+monsters.push(new Monster(0, 1255, 168, 42, 32, 2, 1));
+monsters.push(new Monster(0, 1005, 318, 42, 32, 1, 1));
 
 function keyAction() {
     if (multikey['w']) {
@@ -143,6 +181,23 @@ function keyAction() {
     }
     if (multikey['d']) {
         hero.move(1);
+    }
+}
+
+function drawMonster() {
+    for (let i = 0; i < monsters.length; i++) {
+        ctx.drawImage(spider, 
+            monsters[i].scene*monsters[i].width,
+            0,
+            monsters[i].width,
+            monsters[i].height,
+            monsters[i].x,
+            monsters[i].y,
+            monsters[i].width,
+            monsters[i].height,
+        );
+        monsters[i].autoMove();
+        monsters[i].mapCollision();
     }
 }
 
@@ -181,6 +236,7 @@ function draw() {
 
     drawGrass();
     drawDecor();
+    drawMonster();
 
     if (hero.direction == -1) {
         ctx.scale(-1, 1);
