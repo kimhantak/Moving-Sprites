@@ -16,7 +16,6 @@ var spider;
 var monsters = [];
 var hero;
 var multikey = {};
-var pos = 2;
 
 function Hero(scene, x, y, width, height, speed, jumpHeight, gravity, gravitySpeed, direction) {
     this.scene = scene;
@@ -29,7 +28,12 @@ function Hero(scene, x, y, width, height, speed, jumpHeight, gravity, gravitySpe
     this.gravity = gravity;
     this.gravitySpeed = gravitySpeed;
     this.direction = direction;
+    this.deathSprite = [6, 5, 6, 5, 6];
+    this._deathSprite = 0;
+    this.deathSpritedelay = 0;
     this.isDown = true;
+    this.isDeath = false;
+    this.pos = 2;
 }
 
 Hero.prototype.disableJump = function() {
@@ -45,12 +49,12 @@ Hero.prototype.move = function(direction) {
     this.x += this.speed*this.direction;
 
     if (this.isDown == true && this.gravity == 0) {
-        if (pos % 18 == 0) {
+        if (this.pos % 18 == 0) {
             this.scene = this.scene++ % 2 + 1;
-            pos = 0;
+            this.pos = 0;
         }
     }
-    pos += 2;
+    this.pos += 2;
 }   
 
 Hero.prototype.stop = function() {
@@ -81,7 +85,12 @@ Hero.prototype.execjumpSprite = function () {
 }
 
 Hero.prototype.deathScene = function() {
-
+    this.speed = 0;
+    this.isDeath = true;
+    this.disableJump();
+    if (this.deathSpritedelay++ % 14 == 0) {
+        this.scene = this.deathSprite[this._deathSprite++ % this.deathSprite.length];
+    }
 }
 
 Hero.prototype.collision = function() {
@@ -157,7 +166,7 @@ Monster.prototype.deathScene = function() {
     this.speed = 0;
     this.isDeath = true;
     if (this.deathSpritedelay++ % 7 == 0) {
-        this.scene = this.deathSprite[this._deathSprite++];
+        this.scene = this.deathSprite[this._deathSprite++ % this.deathSprite.length];
     }
 }
 
@@ -180,8 +189,10 @@ Monster.prototype.collideByHero = function() {
         this.height + this.y > hero.y && 
         hero.gravity == 0 && this.isDeath == false) 
     {
-        console.log("hero death");
         hero.deathScene();
+        setTimeout(() => { 
+            window.location.reload();
+        }, 1000);
     }
 }
 
