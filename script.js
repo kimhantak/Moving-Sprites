@@ -128,7 +128,7 @@ function Monster(scene, x, y, width, height, speed, direction) {
 Monster.prototype.autoMove = function() {
     this.x += this.speed*this.direction;
 
-     if (this.mPos % 18 == 0) {
+    if (this.mPos % 18 == 0) {
         this.scene = this.scene++ % 2 + 1;
         this.mPos = 0;
     }
@@ -149,9 +149,11 @@ Monster.prototype.collideByHero = function() {
     if (this.x < hero.x + hero.width &&
         this.x + this.width > hero.x &&
         this.y < hero.y + hero.height &&
-        this.height + this.y > hero.y) {
+        this.height + this.y > hero.y && 
+        hero.gravity > 0) 
+    {
+        hero.gravity = -15;
         monsters.splice(monsters.indexOf(this), 1);
-    } else {
     }
 }
 
