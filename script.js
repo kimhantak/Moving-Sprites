@@ -1,4 +1,4 @@
-import { Level } from './levels/field0';
+import { Level } from './levels/field0.js';
 
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
