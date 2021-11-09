@@ -122,6 +122,19 @@ level = Level['grass'];
 init = Level['hero'];
 hero = new Hero(0, init.x, init.y, 36, 42, 6, -25, 0, 1, 1);
 
+function keyAction() {
+    if (multikey['w']) {
+        hero.jump();
+        hero.disableJump();
+    }
+    if (multikey['a']) {
+        hero.move(-1);
+    }
+    if (multikey['d']) {
+        hero.move(1);
+    }
+}
+
 function draw() {
     ctx.drawImage(background, 0, 0, background.width, background.height, 0, 0, width, height);
 
@@ -164,16 +177,7 @@ function draw() {
         );
     }
 
-    if (multikey['w']) {
-        hero.jump();
-        hero.disableJump();
-    }
-    if (multikey['a']) {
-        hero.move(-1);
-    }
-    if (multikey['d']) {
-        hero.move(1);
-    }
+    keyAction();
 }
 
 function loop() {
