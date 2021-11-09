@@ -80,6 +80,10 @@ Hero.prototype.execjumpSprite = function () {
     }   
 }
 
+Hero.prototype.deathScene = function() {
+
+}
+
 Hero.prototype.collision = function() {
     let heroPos = {
         x: this.x + Math.floor(this.width/2),
@@ -123,6 +127,10 @@ function Monster(scene, x, y, width, height, speed, direction) {
     this.speed = speed;
     this.direction = direction;
     this.mPos = 2;
+    this.deathSprite = [0, 4, 0, 4, 0, 2, 2, 3, 3];
+    this._deathSprite = 0;
+    this.deathSpritedelay = 0;
+    this.isDeath = false;
 }
 
 Monster.prototype.autoMove = function() {
@@ -145,15 +153,35 @@ Monster.prototype.mapCollision = function() {
     }
 }
 
+Monster.prototype.deathScene = function() {
+    this.speed = 0;
+    this.isDeath = true;
+    if (this.deathSpritedelay++ % 7 == 0) {
+        this.scene = this.deathSprite[this._deathSprite++];
+    }
+}
+
 Monster.prototype.collideByHero = function() {
     if (this.x < hero.x + hero.width &&
         this.x + this.width > hero.x &&
         this.y < hero.y + hero.height &&
         this.height + this.y > hero.y && 
-        hero.gravity > 0) 
+        hero.gravity > 0 && this.isDeath == false) 
     {
         hero.gravity = -15;
-        monsters.splice(monsters.indexOf(this), 1);
+        this.deathScene();
+        setTimeout(() => { 
+            monsters.splice(monsters.indexOf(this), 1);
+        }, 1000);
+    } else if (
+        this.x < hero.x + hero.width &&
+        this.x + this.width > hero.x &&
+        this.y < hero.y + hero.height &&
+        this.height + this.y > hero.y && 
+        hero.gravity == 0 && this.isDeath == false) 
+    {
+        console.log("hero death");
+        hero.deathScene();
     }
 }
 
@@ -197,7 +225,7 @@ function keyAction() {
 }
 
 function drawMonster() {
-    for (let i = 0; i < monsters.length; i++) {
+    for (let i = 0; i < monsters.length; i++) { 
         ctx.drawImage(spider, 
             monsters[i].scene*monsters[i].width,
             0,
@@ -206,9 +234,13 @@ function drawMonster() {
             monsters[i].x,
             monsters[i].y,
             monsters[i].width,
-            monsters[i].height,
-        );
-        monsters[i].autoMove();
+            monsters[i].height
+        );    
+        if (monsters[i].isDeath == true) {
+            monsters[i].deathScene();
+        } else {
+            monsters[i].autoMove();
+        }
         monsters[i].mapCollision();
         monsters[i].collideByHero();
     }
