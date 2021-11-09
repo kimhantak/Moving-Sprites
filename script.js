@@ -7,9 +7,12 @@ const height = canvas.height = window.innerHeight;
 
 var level = [];
 var init = [];
+var decor = [];
 var background;
 var sprites;
 var grass;
+var decoration;
+var spider;
 var hero;
 var multikey = {};
 var pos = 2;
@@ -111,15 +114,23 @@ Hero.prototype.mapCollision = function() {
 background = new Image();
 background.src = 'assets/background.png';
 
+grass = new Image();
+grass.src = 'assets/grass_8x1.png';
+
+decoration = new Image();
+decoration.src = "assets/decor.png";
+
+spider = new Image();
+spider.src = "assets/spider.png";
+
 sprites = new Image();
 sprites.src = 'assets/hero.png';
 sprites.onload = draw;
 
-grass = new Image();
-grass.src = 'assets/grass_8x1.png';
-
 level = Level['grass'];
 init = Level['hero'];
+decor = Level['decor'];
+
 hero = new Hero(0, init.x, init.y, 36, 42, 6, -25, 0, 1, 1);
 
 function keyAction() {
@@ -135,9 +146,7 @@ function keyAction() {
     }
 }
 
-function draw() {
-    ctx.drawImage(background, 0, 0, background.width, background.height, 0, 0, width, height);
-
+function drawGrass() {
     for (let i = 0; i < level.length; i++) {
         ctx.drawImage(grass, 
             0, 
@@ -150,6 +159,28 @@ function draw() {
             level[i].height
         );
     }
+}
+
+function drawDecor() {
+    for (let i = 0; i < decor.length; i++) {
+        ctx.drawImage(decoration, 
+            decor[i].scene*42, 
+            0, 
+            42, 
+            decor[i].height, 
+            decor[i].x, 
+            decor[i].y, 
+            decor[i].width, 
+            decor[i].height
+        );
+    }
+}
+
+function draw() {
+    ctx.drawImage(background, 0, 0, background.width, background.height, 0, 0, width, height);
+
+    drawGrass();
+    drawDecor();
 
     if (hero.direction == -1) {
         ctx.scale(-1, 1);
