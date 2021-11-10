@@ -12,7 +12,7 @@ const height = canvas.height = window.innerHeight;
 
 // round
 var level = [Level1, Level2];
-var _level = 0;
+var _level = -1;
 var round = level[_level];
 
 // levelObjs
@@ -123,36 +123,6 @@ numbers.src = 'assets/numbers.png';
 heroSprite = new Image();
 heroSprite.src = 'assets/hero.png';
 heroSprite.onload = draw;
-
-levelObj = round['grass'];
-heroObj = round['hero'];
-decorationObj = round['decor'];
-monsterObj = round['monsters'];
-
-hero = new Hero(0, 
-    heroObj.x, 
-    heroObj.y, 
-    heroObj.width, 
-    heroObj.height, 
-    heroObj.speed, 
-    heroObj.jumpHeight, 
-    heroObj.gravity, 
-    heroObj.gravitySpeed, 
-    heroObj.direction
-);
-for (let k = 0; k < monsterObj.length; k++) {
-    monsters.push(
-        new Monster(monsterObj[k].scene, 
-            monsterObj[k].x, 
-            monsterObj[k].y, 
-            monsterObj[k].width, 
-            monsterObj[k].height, 
-            monsterObj[k].speed, 
-            monsterObj[k].direction, 
-            monsterObj[k].lWall,
-            monsterObj[k].rWrall )
-        );
-}
 
 scoreBoard = new ScoreBoard(0);
 scoreBoard.canNextRound = function() {
@@ -321,4 +291,5 @@ function loop() {
     requestAnimationFrame(loop);
 }
 
+loadRound();
 loop();
