@@ -5,6 +5,8 @@
 #### https://mozdevs.github.io/html5-games-workshop/en/guides/platformer/start-here/ 
 #### 해당 사이트의 게임 방법을 참고하여 제작했다. 또한, Phaser.js는 사용하지 않았다.
 ----------------------------------
+#### 실행 시 주의사항: 디스플레이 해상도 1920x1080(풀스크린)을 기준으로 제작했기에, 모바일 환경을 지원하지 않는다.
+----------------------------------
 #### 게임 플레이 영상
 https://www.youtube.com/watch?v=7txepGf0-Ps
 ----------------------------------
@@ -19,6 +21,6 @@ https://www.youtube.com/watch?v=7txepGf0-Ps
 > javascript의 활용성 알고 javascript 문법을 공부, 그리고 javascript를 이용한 간단한 게임 로직 공부
 ----------------------------------
 ### 게임 실행 환경과 분할된 코드 설명
-> localhost에서 실행 했다. 
+> localhost에서 실행 했다.
 > assets/: 이미지, levels/: 지형 및 캐릭터 초기 설정, Objects/: 플레이어(영웅)과 거미(몬스터), 점수판
 ----------------------------------
