@@ -16,6 +16,8 @@ var spider;
 var monsters = [];
 var hero;
 var multikey = {};
+var scoreBoard;
+var numbers;
 
 function Hero(scene, x, y, width, height, speed, jumpHeight, gravity, gravitySpeed, direction) {
     this.scene = scene;
@@ -196,6 +198,11 @@ Monster.prototype.collideByHero = function() {
     }
 }
 
+function ScoreBoard(killPoint) {
+    this.killPoint = killPoint;
+    this.scoreSprite = 0;
+}
+
 background = new Image();
 background.src = 'assets/background.png';
 
@@ -207,6 +214,9 @@ decoration.src = "assets/decor.png";
 
 spider = new Image();
 spider.src = "assets/spider.png";
+
+numbers = new Image();
+numbers.src = 'assets/numbers.png';
 
 sprites = new Image();
 sprites.src = 'assets/hero.png';
@@ -221,6 +231,7 @@ monsters.push(new Monster(0, 35, 168, 42, 32, 1, 1));
 monsters.push(new Monster(0, 285, 318, 42, 32, 2, 1));
 monsters.push(new Monster(0, 1255, 168, 42, 32, 2, 1));
 monsters.push(new Monster(0, 1005, 318, 42, 32, 1, 1));
+scoreBoard = new ScoreBoard(0);
 
 function keyAction() {
     if (multikey['w']) {
@@ -287,11 +298,27 @@ function drawDecor() {
     }
 }
 
+function drawScore() {
+    // width: 20 height: 26
+    console.log(11);
+    ctx.drawImage(numbers, 
+        0,
+        0,
+        42,
+        32,
+        500,
+        100,
+        42,
+        32
+    );  
+}
+
 function draw() {
     ctx.drawImage(background, 0, 0, background.width, background.height, 0, 0, width, height);
-
+    console.log(33);
     drawGrass();
     drawDecor();
+    drawScore();
     drawMonster();
 
     if (hero.direction == -1) {
