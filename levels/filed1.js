@@ -14,14 +14,157 @@ const level2 = {
     "monsters": [
         {
             "scene": 0, 
-            "x": 35, 
-            "y": 168, 
+            "x": 605, 
+            "y": 626, 
             "width": 42, 
             "height": 32, 
             "speed": 1, 
             "direction": 1, 
             "lWall": 5, 
-            "rWrall": 245
+            "rWrall": 290
+        },
+        {
+            "scene": 0, 
+            "x": 1055, 
+            "y": 568, 
+            "width": 42, 
+            "height": 32, 
+            "speed": 3, 
+            "direction": 1, 
+            "lWall": 5, 
+            "rWrall": 443
+        },
+        {
+            "scene": 0, 
+            "x": 1055, 
+            "y": 568, 
+            "width": 42, 
+            "height": 32, 
+            "speed": 2, 
+            "direction": 1, 
+            "lWall": 5, 
+            "rWrall": 443
+        },
+        {
+            "scene": 0, 
+            "x": 1305, 
+            "y": 318, 
+            "width": 42, 
+            "height": 32, 
+            "speed": 1, 
+            "direction": 1, 
+            "lWall": 5, 
+            "rWrall": 190
+        },
+        {
+            "scene": 0, 
+            "x": 665, 
+            "y": 108, 
+            "width": 42, 
+            "height": 32, 
+            "speed": 2, 
+            "direction": 1, 
+            "lWall": 5, 
+            "rWrall": 359
+        },
+        {
+            "scene": 0, 
+            "x": 805, 
+            "y": 468, 
+            "width": 42, 
+            "height": 32, 
+            "speed": 2, 
+            "direction": 1, 
+            "lWall": 5, 
+            "rWrall": 259
+        },
+        {
+            "scene": 0, 
+            "x": 25, 
+            "y": 538, 
+            "width": 42, 
+            "height": 32, 
+            "speed": 2, 
+            "direction": 1, 
+            "lWall": 5, 
+            "rWrall": 459
+        },
+        {
+            "scene": 0, 
+            "x": 25, 
+            "y": 538, 
+            "width": 42, 
+            "height": 32, 
+            "speed": 4, 
+            "direction": 1, 
+            "lWall": 5, 
+            "rWrall": 459
+        },
+        {
+            "scene": 0, 
+            "x": 25, 
+            "y": 538, 
+            "width": 42, 
+            "height": 32, 
+            "speed": 3, 
+            "direction": 1, 
+            "lWall": 5, 
+            "rWrall": 459
+        },
+        {
+            "scene": 0, 
+            "x": 1225, 
+            "y": 68, 
+            "width": 42, 
+            "height": 32, 
+            "speed": 2, 
+            "direction": 1, 
+            "lWall": 5, 
+            "rWrall": 194
+        },
+        {
+            "scene": 0, 
+            "x": 25, 
+            "y": 188, 
+            "width": 42, 
+            "height": 32, 
+            "speed": 2, 
+            "direction": 1, 
+            "lWall": 5, 
+            "rWrall": 464
+        },
+        {
+            "scene": 0, 
+            "x": 25, 
+            "y": 188, 
+            "width": 42, 
+            "height": 32, 
+            "speed": 3, 
+            "direction": 1, 
+            "lWall": 5, 
+            "rWrall": 464
+        },
+        {
+            "scene": 0, 
+            "x": 25, 
+            "y": 188, 
+            "width": 42, 
+            "height": 32, 
+            "speed": 1, 
+            "direction": 1, 
+            "lWall": 5, 
+            "rWrall": 464
+        },
+        {
+            "scene": 0, 
+            "x": 445, 
+            "y": 318, 
+            "width": 42, 
+            "height": 32, 
+            "speed": 2, 
+            "direction": 1, 
+            "lWall": 5, 
+            "rWrall": 264
         }
     ],
     "grass": [
@@ -38,42 +181,57 @@ const level2 = {
             "y": 658,
             "width": 300,
             "height": 42
-        },
-        // right grass 2
+        }
+        
+        ,
         {
-            "x": 1000,
+            "x": 1050,
+            "y": 600,
+            "width": 450,
+            "height": 42
+        },
+        {
+            "x": 1300,
             "y": 350,
-            "width": 250,
+            "width": 200,
             "height": 42
         },
-        // right grass 1
         {
-            "x": 1250,
-            "y": 200,
-            "width": 250,
+            "x": 660,
+            "y": 140,
+            "width": 370,
             "height": 42
         },
-        // left grass 2
         {
-            "x": 280,
+            "x": 1220,
+            "y": 100,
+            "width": 200,
+            "height": 42
+        },
+        {
+            "x": 800,
+            "y": 500,
+            "width": 270,
+            "height": 42
+        },
+        {
+            "x": 20,
+            "y": 570,
+            "width": 470,
+            "height": 42
+        },
+        {
+            "x": 20,
+            "y": 220,
+            "width": 470,
+            "height": 42
+        },
+        {
+            "x": 440,
             "y": 350,
-            "width": 250,
+            "width": 270,
             "height": 42
-        },
-        // left grass 1
-        {
-            "x": 30,
-            "y": 200,
-            "width": 250,
-            "height": 42
-        },
-        // center grass
-        {
-            "x": 625,
-            "y": 350,
-            "width": 250,
-            "height": 42
-        },
+        }
     ],
     "decor": [
         {
@@ -166,81 +324,153 @@ const level2 = {
             "y": 616,
             "width": 42,
             "height": 42
-        },
+        }
+
+        ,
         {
-            "scene": 0,
-            "x": 1280,
-            "y": 158,
-            "width": 42,
-            "height": 42
-        },
-        {
-            "scene": 4,
-            "x": 1380,
-            "y": 158,
-            "width": 42,
-            "height": 42
-        },
-        {
-            "scene": 4,
+            "scene": 1,
             "x": 1100,
-            "y": 308,
+            "y": 558,
+            "width": 42,
+            "height": 42
+        },
+        {
+            "scene": 4,
+            "x": 1370,
+            "y": 558,
+            "width": 42,
+            "height": 42
+        },
+        {
+            "scene": 2,
+            "x": 1150,
+            "y": 558,
+            "width": 42,
+            "height": 42
+        },
+        {
+            "scene": 2,
+            "x": 1192,
+            "y": 558,
+            "width": 42,
+            "height": 42
+        },
+        {
+            "scene": 4,
+            "x": 1200,
+            "y": 558,
+            "width": 42,
+            "height": 42
+        },
+        {
+            "scene": 2,
+            "x": 1234,
+            "y": 558,
             "width": 42,
             "height": 42
         },
         {
             "scene": 3,
-            "x": 1210,
-            "y": 308,
-            "width": 42,
-            "height": 42
-        },
-        {
-            "scene": 2,
-            "x": 335,
-            "y": 308,
-            "width": 42,
-            "height": 42
-        },
-        {
-            "scene": 0,
-            "x": 400,
+            "x": 1400,
             "y": 308,
             "width": 42,
             "height": 42
         },
         {
             "scene": 4,
-            "x": 300,
+            "x": 1350,
             "y": 308,
-            "width": 42,
-            "height": 42
-        },
-        {
-            "scene": 4,
-            "x": 670,
-            "y": 308,
-            "width": 42,
-            "height": 42
-        },
-        {
-            "scene": 2,
-            "x": 720,
-            "y": 308,
-            "width": 42,
-            "height": 42
-        },
-        {
-            "scene": 2,
-            "x": 70,
-            "y": 158,
             "width": 42,
             "height": 42
         },
         {
             "scene": 1,
-            "x": 150,
-            "y": 158,
+            "x": 720,
+            "y": 98,
+            "width": 42,
+            "height": 42
+        },
+        {
+            "scene": 1,
+            "x": 860,
+            "y": 98,
+            "width": 42,
+            "height": 42
+        },
+        {
+            "scene": 2,
+            "x": 1300,
+            "y": 58,
+            "width": 42,
+            "height": 42
+        },
+        {
+            "scene": 2,
+            "x": 1342,
+            "y": 58,
+            "width": 42,
+            "height": 42
+        },
+        {
+            "scene": 2,
+            "x": 1258,
+            "y": 58,
+            "width": 42,
+            "height": 42
+        },
+        {
+            "scene": 3,
+            "x": 850,
+            "y": 458,
+            "width": 42,
+            "height": 42
+        },
+        {
+            "scene": 3,
+            "x": 25,
+            "y": 528,
+            "width": 42,
+            "height": 42
+        },
+        {
+            "scene": 1,
+            "x": 245,
+            "y": 528,
+            "width": 42,
+            "height": 42
+        },
+        {
+            "scene": 4,
+            "x": 325,
+            "y": 528,
+            "width": 42,
+            "height": 42
+        },
+        {
+            "scene": 4,
+            "x": 55,
+            "y": 178,
+            "width": 42,
+            "height": 42
+        },
+        {
+            "scene": 2,
+            "x": 155,
+            "y": 178,
+            "width": 42,
+            "height": 42
+        },
+        {
+            "scene": 3,
+            "x": 355,
+            "y": 178,
+            "width": 42,
+            "height": 42
+        },
+        {
+            "scene": 3,
+            "x": 470,
+            "y": 308,
             "width": 42,
             "height": 42
         }
