@@ -1,8 +1,8 @@
-function Monster(scene, x, y, width, height, speed, direction) {
+function Monster(scene, x, y, width, height, speed, direction, lWall, rWall) {
     this.scene = scene;
     this.x = x;
-    this.minX = this.x-5;
-    this.maxX = this.x+245;
+    this.minX = this.x-lWall;
+    this.maxX = this.x+rWall;
     this.y = y;
     this.width = width;
     this.height = height;

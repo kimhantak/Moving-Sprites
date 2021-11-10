@@ -1,8 +1,62 @@
 const level = {
     "hero": {
+        "scene": 0,
         "x": 50,
-        "y": 682
+        "y": 682,
+        "width": 36,
+        "height": 42,
+        "speed": 6,
+        "jumpHeight": -25,
+        "gravity": 0,
+        "gravitySpeed": 1,
+        "direction": 1
     },
+    "monsters": [
+        {
+            "scene": 0, 
+            "x": 35, 
+            "y": 168, 
+            "width": 42, 
+            "height": 32, 
+            "speed": 1, 
+            "direction": 1, 
+            "lWall": 5, 
+            "rWrall": 245
+        },
+        {
+            "scene": 0, 
+            "x": 285, 
+            "y": 318, 
+            "width": 42, 
+            "height": 32, 
+            "speed": 2, 
+            "direction": 1, 
+            "lWall": 5, 
+            "rWrall": 245
+        },
+        {
+            "scene": 0, 
+            "x": 1255, 
+            "y": 168, 
+            "width": 42, 
+            "height": 32, 
+            "speed": 1, 
+            "direction": 1, 
+            "lWall": 5, 
+            "rWrall": 245
+        },
+        {
+            "scene": 0, 
+            "x": 1005, 
+            "y": 318, 
+            "width": 42, 
+            "height": 32, 
+            "speed": 2, 
+            "direction": 1, 
+            "lWall": 5, 
+            "rWrall": 245
+        }
+    ],
     "grass": [
         // ground
         {

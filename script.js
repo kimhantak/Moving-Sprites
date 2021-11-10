@@ -9,10 +9,10 @@ const ctx = canvas.getContext('2d');
 const width = canvas.width = window.innerWidth;
 const height = canvas.height = window.innerHeight;
 
-// levels
-var level = [];
-var init = [];
-var decor = [];
+// levelObjs
+var levelObj = [];
+var heroObj = [];
+var decorationObj = [];
 
 // asset
 var background;
@@ -82,9 +82,9 @@ ScoreBoard.prototype.drawScore = function() {
     );  
 }
 
-level = Level['grass'];
-init = Level['hero'];
-decor = Level['decor'];
+levelObj = Level['grass'];
+heroObj = Level['hero'];
+decorationObj = Level['decor'];
 
 background = new Image();
 background.src = 'assets/background.png';
@@ -105,11 +105,11 @@ heroSprite = new Image();
 heroSprite.src = 'assets/hero.png';
 heroSprite.onload = draw;
 
-hero = new Hero(0, init.x, init.y, 36, 42, 6, -25, 0, 1, 1);
-monsters.push(new Monster(0, 35, 168, 42, 32, 1, 1));
-monsters.push(new Monster(0, 285, 318, 42, 32, 2, 1));
-monsters.push(new Monster(0, 1255, 168, 42, 32, 2, 1));
-monsters.push(new Monster(0, 1005, 318, 42, 32, 1, 1));
+hero = new Hero(0, heroObj.x, heroObj.y, 36, 42, 6, -25, 0, 1, 1);
+monsters.push(new Monster(0, 35, 168, 42, 32, 1, 1, 5, 245));
+monsters.push(new Monster(0, 285, 318, 42, 32, 2, 1, 5, 245));
+monsters.push(new Monster(0, 1255, 168, 42, 32, 2, 1, 5, 245));
+monsters.push(new Monster(0, 1005, 318, 42, 32, 1, 1, 5, 245));
 scoreBoard = new ScoreBoard(0);
 
 function drawMonster() {
@@ -135,31 +135,31 @@ function drawMonster() {
 }
 
 function drawGrass() {
-    for (let i = 0; i < level.length; i++) {
+    for (let i = 0; i < levelObj.length; i++) {
         ctx.drawImage(grass, 
             0, 
             0, 
             grass.width, 
             grass.height, 
-            level[i].x, 
-            level[i].y, 
-            level[i].width, 
-            level[i].height
+            levelObj[i].x, 
+            levelObj[i].y, 
+            levelObj[i].width, 
+            levelObj[i].height
         );
     }
 }
 
 function drawDecor() {
-    for (let i = 0; i < decor.length; i++) {
+    for (let i = 0; i < decorationObj.length; i++) {
         ctx.drawImage(decoration, 
-            decor[i].scene*42, 
+            decorationObj[i].scene*42, 
             0, 
             42, 
-            decor[i].height, 
-            decor[i].x, 
-            decor[i].y, 
-            decor[i].width, 
-            decor[i].height
+            decorationObj[i].height, 
+            decorationObj[i].x, 
+            decorationObj[i].y, 
+            decorationObj[i].width, 
+            decorationObj[i].height
         );
     }
 }
@@ -189,8 +189,8 @@ function draw() {
 
     drawGrass();
     drawDecor();
-    drawMonster();
     scoreBoard.drawScore();
+    drawMonster();
     HeroAction();
     keyAction();
 
