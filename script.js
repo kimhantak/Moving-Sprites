@@ -9,19 +9,26 @@ const ctx = canvas.getContext('2d');
 const width = canvas.width = window.innerWidth;
 const height = canvas.height = window.innerHeight;
 
+// levels
 var level = [];
 var init = [];
 var decor = [];
+
+// asset
 var background;
-var sprites;
+var heroSprite;
 var grass;
 var decoration;
 var spider;
+var numbers;
+
+// objects
 var monsters = [];
 var hero;
-var multikey = {};
 var scoreBoard;
-var numbers;
+
+// key event
+var multikey = {};
 
 Monster.prototype.collideByHero = function() {
     if (this.x < hero.x + hero.width &&
@@ -50,6 +57,31 @@ Monster.prototype.collideByHero = function() {
     }
 }
 
+ScoreBoard.prototype.drawScore = function() {
+    ctx.drawImage(spider, 0, 0, 42, 32, Math.floor(width/2)-75, 10, 42, 32); 
+    ctx.drawImage(numbers, 80, 26, 20, 26, Math.floor(width/2)-20, 14, 20, 26);  
+    ctx.drawImage(numbers, 
+        scoreBoard.numPosition[Math.floor(scoreBoard.killPoint/10)][0],
+        scoreBoard.numPosition[Math.floor(scoreBoard.killPoint/10)][1],
+        20,
+        26,
+        Math.floor(width/2)+10,
+        14,
+        20,
+        26
+    );  
+    ctx.drawImage(numbers, 
+        scoreBoard.numPosition[Math.floor(scoreBoard.killPoint%10)][0],
+        scoreBoard.numPosition[Math.floor(scoreBoard.killPoint%10)][1],
+        20,
+        26,
+        Math.floor(width/2)+33,
+        14,
+        20,
+        26
+    );  
+}
+
 level = Level['grass'];
 init = Level['hero'];
 decor = Level['decor'];
@@ -69,9 +101,9 @@ spider.src = "assets/spider.png";
 numbers = new Image();
 numbers.src = 'assets/numbers.png';
 
-sprites = new Image();
-sprites.src = 'assets/hero.png';
-sprites.onload = draw;
+heroSprite = new Image();
+heroSprite.src = 'assets/hero.png';
+heroSprite.onload = draw;
 
 hero = new Hero(0, init.x, init.y, 36, 42, 6, -25, 0, 1, 1);
 monsters.push(new Monster(0, 35, 168, 42, 32, 1, 1));
@@ -79,19 +111,6 @@ monsters.push(new Monster(0, 285, 318, 42, 32, 2, 1));
 monsters.push(new Monster(0, 1255, 168, 42, 32, 2, 1));
 monsters.push(new Monster(0, 1005, 318, 42, 32, 1, 1));
 scoreBoard = new ScoreBoard(0);
-
-function keyAction() {
-    if (multikey['w']) {
-        hero.jump();
-        hero.disableJump();
-    }
-    if (multikey['a']) {
-        hero.move(-1);
-    }
-    if (multikey['d']) {
-        hero.move(1);
-    }
-}
 
 function drawMonster() {
     for (let i = 0; i < monsters.length; i++) { 
@@ -145,29 +164,24 @@ function drawDecor() {
     }
 }
 
-function drawScore() {
-    ctx.drawImage(spider, 0, 0, 42, 32, Math.floor(width/2)-75, 10, 42, 32); 
-    ctx.drawImage(numbers, 80, 26, 20, 26, Math.floor(width/2)-20, 14, 20, 26);  
-    ctx.drawImage(numbers, 
-        scoreBoard.numPosition[Math.floor(scoreBoard.killPoint/10)][0],
-        scoreBoard.numPosition[Math.floor(scoreBoard.killPoint/10)][1],
-        20,
-        26,
-        Math.floor(width/2)+10,
-        14,
-        20,
-        26
-    );  
-    ctx.drawImage(numbers, 
-        scoreBoard.numPosition[Math.floor(scoreBoard.killPoint%10)][0],
-        scoreBoard.numPosition[Math.floor(scoreBoard.killPoint%10)][1],
-        20,
-        26,
-        Math.floor(width/2)+33,
-        14,
-        20,
-        26
-    );  
+function HeroAction() {
+    hero.execGravity();
+    hero.mapCollision();
+    hero.collision();
+    hero.execjumpSprite();
+}
+
+function keyAction() {
+    if (multikey['w']) {
+        hero.jump();
+        hero.disableJump();
+    }
+    if (multikey['a']) {
+        hero.move(-1);
+    }
+    if (multikey['d']) {
+        hero.move(1);
+    }
 }
 
 function draw() {
@@ -175,12 +189,14 @@ function draw() {
 
     drawGrass();
     drawDecor();
-    drawScore();
     drawMonster();
+    scoreBoard.drawScore();
+    HeroAction();
+    keyAction();
 
     if (hero.direction == -1) {
         ctx.scale(-1, 1);
-        ctx.drawImage(sprites, 
+        ctx.drawImage(heroSprite, 
             hero.scene*hero.width, 
             0, 
             hero.width, 
@@ -192,7 +208,7 @@ function draw() {
         );
         ctx.scale(-1, 1);
     } else {
-        ctx.drawImage(sprites, 
+        ctx.drawImage(heroSprite, 
             hero.scene*hero.width, 
             0, 
             hero.width, 
@@ -203,20 +219,7 @@ function draw() {
             hero.height
         );
     }
-
-    keyAction();
 }
-
-function loop() {
-    hero.execGravity();
-    hero.mapCollision();
-    hero.collision();
-    hero.execjumpSprite();
-    draw();
-    requestAnimationFrame(loop);
-}
-
-loop();
 
 window.addEventListener('keydown', (e) => {
     multikey[e.key] = true;
@@ -229,3 +232,10 @@ window.addEventListener('keyup', (e) => {
     hero.stop();
     delete multikey[e.key];
 }, false);
+
+function loop() {
+    draw();
+    requestAnimationFrame(loop);
+}
+
+loop();
