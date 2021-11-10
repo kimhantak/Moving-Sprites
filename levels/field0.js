@@ -18,7 +18,7 @@ const level1 = {
             "y": 168, 
             "width": 42, 
             "height": 32, 
-            "speed": 1, 
+            "speed": 3, 
             "direction": 1, 
             "lWall": 5, 
             "rWrall": 245
@@ -51,7 +51,7 @@ const level1 = {
             "y": 318, 
             "width": 42, 
             "height": 32, 
-            "speed": 2, 
+            "speed": 4, 
             "direction": 1, 
             "lWall": 5, 
             "rWrall": 245
