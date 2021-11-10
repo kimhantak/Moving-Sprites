@@ -16,6 +16,7 @@ function ScoreBoard(killPoint) {
 
 ScoreBoard.prototype.addScore = function() {
     this.killPoint++;
+    this.canNextRound();
 }
 
 export { ScoreBoard };

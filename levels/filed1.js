@@ -1,4 +1,4 @@
-const level1 = {
+const level2 = {
     "hero": {
         "scene": 0,
         "x": 50,
@@ -19,39 +19,6 @@ const level1 = {
             "width": 42, 
             "height": 32, 
             "speed": 1, 
-            "direction": 1, 
-            "lWall": 5, 
-            "rWrall": 245
-        },
-        {
-            "scene": 0, 
-            "x": 285, 
-            "y": 318, 
-            "width": 42, 
-            "height": 32, 
-            "speed": 2, 
-            "direction": 1, 
-            "lWall": 5, 
-            "rWrall": 245
-        },
-        {
-            "scene": 0, 
-            "x": 1255, 
-            "y": 168, 
-            "width": 42, 
-            "height": 32, 
-            "speed": 1, 
-            "direction": 1, 
-            "lWall": 5, 
-            "rWrall": 245
-        },
-        {
-            "scene": 0, 
-            "x": 1005, 
-            "y": 318, 
-            "width": 42, 
-            "height": 32, 
-            "speed": 2, 
             "direction": 1, 
             "lWall": 5, 
             "rWrall": 245
@@ -280,4 +247,4 @@ const level1 = {
     ]
 };
 
-export { level1 as Level1 };
+export { level2 as Level2 };

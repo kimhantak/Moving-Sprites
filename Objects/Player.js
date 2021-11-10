@@ -1,8 +1,5 @@
-import { Level } from '../levels/field0.js';
-
 const width = window.innerWidth;
 const height = window.innerHeight;
-var level = Level['grass'];
 
 function Hero(scene, x, y, width, height, speed, jumpHeight, gravity, gravitySpeed, direction) {
     this.scene = scene;
@@ -77,22 +74,6 @@ Hero.prototype.deathScene = function() {
     this.disableJump();
     if (this.deathSpritedelay++ % 14 == 0) {
         this.scene = this.deathSprite[this._deathSprite++ % this.deathSprite.length];
-    }
-}
-
-Hero.prototype.collision = function() {
-    let heroPos = {
-        x: this.x + Math.floor(this.width/2),
-        y: this.y + this.height
-    }
-    for (let i = 0; i < level.length; i++) {
-        if ((heroPos.x >= level[i].x && heroPos.x <= level[i].x+level[i].width) 
-            && (this.y + this.height <= level[i].y+42 && this.y + this.height >= level[i].y-10)) {
-            if (0 < this.gravity) {
-                this.y = level[i].y - this.height;
-                this.gravity = 0;
-            }
-        } 
     }
 }
 

@@ -1,4 +1,5 @@
-import { Level } from './levels/field0.js';
+import { Level1 } from './levels/field0.js';
+import { Level2 } from './levels/filed1.js';
 
 import { Hero } from './Objects/Player.js';
 import { Monster } from './Objects/Monster.js';
@@ -9,10 +10,16 @@ const ctx = canvas.getContext('2d');
 const width = canvas.width = window.innerWidth;
 const height = canvas.height = window.innerHeight;
 
+// round
+var level = [Level1, Level2];
+var _level = 0;
+var round = level[_level];
+
 // levelObjs
 var levelObj = [];
 var heroObj = [];
 var decorationObj = [];
+var monsterObj = [];
 
 // asset
 var background;
@@ -40,8 +47,8 @@ Monster.prototype.collideByHero = function() {
         hero.gravity = -15;
         this.deathScene();
         setTimeout(() => { 
-            scoreBoard.addScore();
             monsters.splice(monsters.indexOf(this), 1);
+            scoreBoard.addScore();
         }, 1000);
     } else if (
         this.x < hero.x + hero.width &&
@@ -82,9 +89,21 @@ ScoreBoard.prototype.drawScore = function() {
     );  
 }
 
-levelObj = Level['grass'];
-heroObj = Level['hero'];
-decorationObj = Level['decor'];
+Hero.prototype.collision = function() {
+    let heroPos = {
+        x: this.x + Math.floor(this.width/2),
+        y: this.y + this.height
+    }
+    for (let i = 0; i < levelObj.length; i++) {
+        if ((heroPos.x >= levelObj[i].x && heroPos.x <= levelObj[i].x+levelObj[i].width) 
+            && (this.y + this.height <= levelObj[i].y+42 && this.y + this.height >= levelObj[i].y-10)) {
+            if (0 < this.gravity) {
+                this.y = levelObj[i].y - this.height;
+                this.gravity = 0;
+            }
+        } 
+    }
+}
 
 background = new Image();
 background.src = 'assets/background.png';
@@ -105,12 +124,76 @@ heroSprite = new Image();
 heroSprite.src = 'assets/hero.png';
 heroSprite.onload = draw;
 
-hero = new Hero(0, heroObj.x, heroObj.y, 36, 42, 6, -25, 0, 1, 1);
-monsters.push(new Monster(0, 35, 168, 42, 32, 1, 1, 5, 245));
-monsters.push(new Monster(0, 285, 318, 42, 32, 2, 1, 5, 245));
-monsters.push(new Monster(0, 1255, 168, 42, 32, 2, 1, 5, 245));
-monsters.push(new Monster(0, 1005, 318, 42, 32, 1, 1, 5, 245));
+levelObj = round['grass'];
+heroObj = round['hero'];
+decorationObj = round['decor'];
+monsterObj = round['monsters'];
+
+hero = new Hero(0, 
+    heroObj.x, 
+    heroObj.y, 
+    heroObj.width, 
+    heroObj.height, 
+    heroObj.speed, 
+    heroObj.jumpHeight, 
+    heroObj.gravity, 
+    heroObj.gravitySpeed, 
+    heroObj.direction
+);
+for (let k = 0; k < monsterObj.length; k++) {
+    monsters.push(
+        new Monster(monsterObj[k].scene, 
+            monsterObj[k].x, 
+            monsterObj[k].y, 
+            monsterObj[k].width, 
+            monsterObj[k].height, 
+            monsterObj[k].speed, 
+            monsterObj[k].direction, 
+            monsterObj[k].lWall,
+            monsterObj[k].rWrall )
+        );
+}
+
 scoreBoard = new ScoreBoard(0);
+scoreBoard.canNextRound = function() {
+    if (monsters.length == 0) {
+        loadRound();
+    }
+}
+
+function loadRound() {
+    round = level[++_level % level.length];
+
+    levelObj = round['grass'];
+    heroObj = round['hero'];
+    decorationObj = round['decor'];
+    monsterObj = round['monsters'];
+
+    hero = new Hero(0, 
+        heroObj.x, 
+        heroObj.y, 
+        heroObj.width, 
+        heroObj.height, 
+        heroObj.speed, 
+        heroObj.jumpHeight, 
+        heroObj.gravity, 
+        heroObj.gravitySpeed, 
+        heroObj.direction
+    );
+    for (let k = 0; k < monsterObj.length; k++) {
+        monsters.push(
+            new Monster(monsterObj[k].scene, 
+                monsterObj[k].x, 
+                monsterObj[k].y, 
+                monsterObj[k].width, 
+                monsterObj[k].height, 
+                monsterObj[k].speed, 
+                monsterObj[k].direction, 
+                monsterObj[k].lWall,
+                monsterObj[k].rWrall )
+            );
+    }
+}
 
 function drawMonster() {
     for (let i = 0; i < monsters.length; i++) { 
