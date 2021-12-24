@@ -7,15 +7,15 @@ import { ScoreBoard } from './Objects/ScoreBoard.js';
 
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
-const width = canvas.width = window.innerWidth;
-const height = canvas.height = window.innerHeight;
+var mapWidth = canvas.width = window.innerWidth;
+var mapHeight = canvas.height = window.innerHeight;
 
 // round
 var level = [Level1, Level2];
-var _level = -1;
+var _level = 0;
 var round = level[_level];
 
-// levelObjs
+// level objects
 var levelObj = [];
 var heroObj = [];
 var decorationObj = [];
@@ -33,6 +33,7 @@ var numbers;
 var monsters = [];
 var hero;
 var scoreBoard;
+var game;
 
 // key event
 var multikey = {};
@@ -65,14 +66,14 @@ Monster.prototype.collideByHero = function() {
 }
 
 ScoreBoard.prototype.drawScore = function() {
-    ctx.drawImage(spider, 0, 0, 42, 32, Math.floor(width/2)-75, 10, 42, 32); 
-    ctx.drawImage(numbers, 80, 26, 20, 26, Math.floor(width/2)-20, 14, 20, 26);  
+    ctx.drawImage(spider, 0, 0, 42, 32, Math.floor(mapWidth/2)-75, 10, 42, 32); 
+    ctx.drawImage(numbers, 80, 26, 20, 26, Math.floor(mapWidth/2)-20, 14, 20, 26);  
     ctx.drawImage(numbers, 
         scoreBoard.numPosition[Math.floor(scoreBoard.killPoint/10)][0],
         scoreBoard.numPosition[Math.floor(scoreBoard.killPoint/10)][1],
         20,
         26,
-        Math.floor(width/2)+10,
+        Math.floor(mapWidth/2)+10,
         14,
         20,
         26
@@ -82,7 +83,7 @@ ScoreBoard.prototype.drawScore = function() {
         scoreBoard.numPosition[Math.floor(scoreBoard.killPoint%10)][1],
         20,
         26,
-        Math.floor(width/2)+33,
+        Math.floor(mapWidth/2)+33,
         14,
         20,
         26
@@ -124,44 +125,17 @@ heroSprite = new Image();
 heroSprite.src = 'assets/hero.png';
 heroSprite.onload = draw;
 
+function Game(scoreBoard, player, monster, round) {
+    this.scoreBoard = scoreBoard;
+    this.player = player;
+    this.monster = monster;
+    this.round = round;
+}
+
 scoreBoard = new ScoreBoard(0);
 scoreBoard.canNextRound = function() {
     if (monsters.length == 0) {
         loadRound();
-    }
-}
-
-function loadRound() {
-    round = level[++_level % level.length];
-
-    levelObj = round['grass'];
-    heroObj = round['hero'];
-    decorationObj = round['decor'];
-    monsterObj = round['monsters'];
-
-    hero = new Hero(0, 
-        heroObj.x, 
-        heroObj.y, 
-        heroObj.width, 
-        heroObj.height, 
-        heroObj.speed, 
-        heroObj.jumpHeight, 
-        heroObj.gravity, 
-        heroObj.gravitySpeed, 
-        heroObj.direction
-    );
-    for (let k = 0; k < monsterObj.length; k++) {
-        monsters.push(
-            new Monster(monsterObj[k].scene, 
-                monsterObj[k].x, 
-                monsterObj[k].y, 
-                monsterObj[k].width, 
-                monsterObj[k].height, 
-                monsterObj[k].speed, 
-                monsterObj[k].direction, 
-                monsterObj[k].lWall,
-                monsterObj[k].rWrall )
-            );
     }
 }
 
@@ -238,7 +212,7 @@ function keyAction() {
 }
 
 function draw() {
-    ctx.drawImage(background, 0, 0, background.width, background.height, 0, 0, width, height);
+    ctx.drawImage(background, 0, 0, background.width, background.height, 0, 0, mapWidth, mapHeight);
 
     drawGrass();
     drawDecor();
@@ -286,9 +260,44 @@ window.addEventListener('keyup', (e) => {
     delete multikey[e.key];
 }, false);
 
+window.addEventListener('resize', (e) => {
+    mapWidth = window.innerWidth;
+    canvas.width = window.innerWidth;
+    mapHeight = window.innerHeight;
+    canvas.height = window.innerHeight;
+}, false);
+
 function loop() {
     draw();
     requestAnimationFrame(loop);
+}
+
+function loadRound() {
+    round = level[_level++];
+
+    levelObj = round['grass'];
+    heroObj = round['hero'];
+    decorationObj = round['decor'];
+    monsterObj = round['monsters'];
+
+    hero = new Hero(0, 
+        heroObj.x, 
+        heroObj.y, 
+        heroObj.width, 
+        heroObj.height, 
+        heroObj.speed, 
+        heroObj.jumpHeight, 
+        heroObj.gravity, 
+        heroObj.gravitySpeed, 
+        heroObj.direction
+    );
+    for (let k = 0; k < monsterObj.length; k++) {
+        monsters.push(
+            new Monster(...monsterObj[k])
+            );
+    }
+
+    game = new Game(scoreBoard, hero, monsters, round);
 }
 
 loadRound();
