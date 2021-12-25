@@ -5,7 +5,7 @@ import { ScoreBoard } from './Objects/ScoreBoard.js';
 import { Win, Lose } from './message/msg.js';
 
 var userName = "";
-userName = window.prompt("게임에 사용할 이름을 입력하라!", "John wick");
+userName = window.prompt("게임에 사용할 이름을 입력하십시오!", "John wick");
 
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
@@ -55,11 +55,10 @@ heroSprite.src = 'assets/hero.png';
 heroSprite.onload = draw;
 
 class Game {
-    constructor(scoreBoard, player, monsters, round) {
+    constructor(scoreBoard, player, monsters) {
         this.scoreBoard = scoreBoard;
         this.player = player;
         this.monsters = monsters;
-        this.round = round;
         this.loseText = Lose[Math.floor(Math.random() * Lose.length)];
         this.winText = Win[Math.floor(Math.random() * Win.length)];
     }
@@ -126,6 +125,19 @@ class Game {
             this.MonsterAllDeathSplash();
         }
     }
+    reloadRound() {
+        game.scoreBoard.killPoint = 0;
+        loadRound();
+    }
+    nextRound() {
+        if (game.monsters.length == 0) {
+            _level += 1;
+            if (level[_level] == undefined) {
+                _level = 0;
+            }
+            loadRound();
+        }
+    }
 }
 
 function drawMap() {
@@ -148,6 +160,13 @@ function keyAction() {
     }
 }
 
+function drawName() {
+    ctx.textAlign = "center";
+    ctx.fillStyle = "black";
+    ctx.font = "12px gothic";
+    ctx.fillText(userName, game.player.x+game.player.width/2, game.player.y-6);
+}
+
 function draw() {
     ctx.drawImage(background, 0, 0, background.width, background.height, 0, 0, mapWidth, mapHeight);
 
@@ -164,13 +183,14 @@ function draw() {
             mst.height );    
         (mst.isDeath == true) ? mst.deathScene() : mst.autoMove();
         mst.mapCollision();
-        mst.collideByHero(game.player, game.monsters, game.scoreBoard);
+        mst.collideByHero(game);
     });
     game.scoreBoard.drawScore(ctx, spider, numbers, mapWidth);
     game.player.execGravity();
     game.player.mapCollision();
     game.player.collisionGrass(levelObj);
-    //game.player.drawName(ctx, userName);
+    
+    drawName();
     keyAction();
     game.GameStateCheck();
 
@@ -204,15 +224,16 @@ function draw() {
 scoreBoard = new ScoreBoard();
 
 function loadRound() {
-    round = level[_level++];
+    round = level[_level];
     levelObj = round['grass'];
     heroObj = round['hero'];
     decorationObj = round['decor'];
     monsterObj = round['monsters'];
 
     hero = new Hero(...heroObj);
+    monsters = [];
     monsterObj.forEach((mst) => { monsters.push(new Monster(...mst)); });
-    game = new Game(scoreBoard, hero, monsters, _level);
+    game = new Game(scoreBoard, hero, monsters);
 }
 
 function loop() {

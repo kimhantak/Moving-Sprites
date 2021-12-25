@@ -25,30 +25,35 @@ Monster.prototype.autoMove = function() {
     this.mPos += 2;
 }
 
-Monster.prototype.collideByHero = function(hero, monsters, scoreBoard) {
-    if (this.x < hero.x + hero.width &&
-        this.x + this.width > hero.x &&
-        this.y < hero.y + hero.height &&
-        this.height + this.y > hero.y && 
-        hero.gravity > 0 && this.isDeath == false) 
+Monster.prototype.collideByHero = function(game) {
+    if (this.x < game.player.x + game.player.width &&
+        this.x + this.width > game.player.x &&
+        this.y < game.player.y + game.player.height &&
+        this.height + this.y > game.player.y && 
+        game.player.gravity > 0 && this.isDeath == false) 
     {
-        hero.gravity = -15;
+        game.player.gravity = -15;
         this.deathScene();
         setTimeout(() => { 
-            monsters.splice(monsters.indexOf(this), 1);
-            scoreBoard.addScore();
+            game.scoreBoard.addScore();
+            game.monsters.splice(game.monsters.indexOf(this), 1);
+            setTimeout(() => { 
+                game.nextRound();
+            }, 1500);
         }, 1500);
     } else if (
-        this.x < hero.x + hero.width &&
-        this.x + this.width > hero.x &&
-        this.y < hero.y + hero.height &&
-        this.height + this.y > hero.y && 
-        hero.gravity == 0 && this.isDeath == false) 
+        this.x < game.player.x + game.player.width &&
+        this.x + this.width > game.player.x &&
+        this.y < game.player.y + game.player.height &&
+        this.height + this.y > game.player.y && 
+        game.player.gravity == 0 && this.isDeath == false) 
     {
-        hero.deathScene();
-        setTimeout(() => { 
-            window.location.reload();
-        }, 1500);
+        if (game.player.isDeath == false) {
+            setTimeout(() => { 
+                game.reloadRound();
+            }, 1500);
+        }
+        game.player.deathScene();
     }
 }
 
