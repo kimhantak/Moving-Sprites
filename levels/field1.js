@@ -1,4 +1,4 @@
-const level1 = {
+const level2 = {
     "hero": [
         0,
         50,
@@ -197,4 +197,4 @@ const level1 = {
     ]
 };
 
-export { level1 as Level1 };
+export { level2 as Level2 };

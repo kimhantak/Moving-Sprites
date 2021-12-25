@@ -39,7 +39,7 @@ Monster.prototype.collideByHero = function(game) {
             game.monsters.splice(game.monsters.indexOf(this), 1);
             setTimeout(() => { 
                 game.nextRound();
-            }, 1500);
+            }, 3000);
         }, 1500);
     } else if (
         this.x < game.player.x + game.player.width &&

@@ -1,4 +1,8 @@
 import { Level1 } from './levels/field0.js';
+import { Level2 } from './levels/field1.js';
+import { Level3 } from './levels/field2.js';
+import { Level4 } from './levels/field3.js';
+import { Level5 } from './levels/field4.js';
 import { Hero } from './Objects/Player.js';
 import { Monster } from './Objects/Monster.js';
 import { ScoreBoard } from './Objects/ScoreBoard.js';
@@ -13,7 +17,7 @@ var mapWidth = canvas.width = window.innerWidth;
 var mapHeight = canvas.height = window.innerHeight;
 
 // round
-var level = [Level1];
+var level = [Level1, Level2, Level3, Level4, Level5];
 var _level = 0;
 var round = level[_level];
 
@@ -155,7 +159,8 @@ function keyAction() {
     }
     if (multikey['a']) {
         hero.move(-1);
-    } else if (multikey['d']) {
+    } 
+    if (multikey['d']) {
         hero.move(1);
     }
 }

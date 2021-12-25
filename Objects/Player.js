@@ -16,6 +16,7 @@ function Hero(scene, x, y, width, height, speed, jumpHeight, gravity, gravitySpe
     this._deathSprite = 0;
     this.deathSpritedelay = 0;
     this.isDown = true;
+    this.isWalkOnGrass = true;
     this.isDeath = false;
     this.pos = 2;
 }
@@ -27,26 +28,39 @@ Hero.prototype.collisionGrass = function(levelObj) {
     };
     levelObj.forEach((lv) => {
         if ((heroPos.x >= lv[0] && heroPos.x <= lv[0]+lv[2]) 
-            && (this.y + this.height <= lv[1]+21 && this.y + this.height >= lv[1])) {
+            && (this.y + this.height <= lv[1]+31 && this.y + this.height >= lv[1])) {
             if (0 < this.gravity) {
                 this.y = lv[1] - this.height;
                 this.gravity = 0;
+                this.isWalkOnGrass = true;
             }
         } 
     });
+    if (this.isWalkOnGrass == true) {
+        this.isDown = true;
+    }
 }
 
 Hero.prototype.move = function(direction) {
     this.direction = direction;
     this.x += this.speed*this.direction;
 
-    if (this.isDown == true && this.gravity == 0) {
-        if (this.pos % 18 == 0) {
+    if (this.isDown == false) {
+        if (this.gravity <= -3) {
+            this.scene = 3;
+        } else if (this.gravity < 20) {
+            this.scene = 5;
+        } 
+    } else {
+        if (this.pos % 14 == 0) {
             this.scene = this.scene++ % 2 + 1;
             this.pos = 0;
         }
+        this.pos += 2;
     }
-    this.pos += 2;
+    if (this.isWalkOnGrass == true) {
+        this.isDown = true;
+    }
 }   
 
 Hero.prototype.stop = function() {
@@ -59,26 +73,14 @@ Hero.prototype.execGravity = function() {
 }
 
 Hero.prototype.jump = function() {
+    this.isWalkOnGrass = false;
     if (this.isDeath == true) {
         return;
-    }
+    }   
     if (this.isDown == true) {
-        this.isDown = false;
-    } else {
-        this.isDown = true;
-    }
-    if (this.isDown == false) {
-        if (this.gravity <= -15) {
-            this.scene = 3;
-        } else if (this.gravity <= -5) {
-            this.scene = 4;
-        } else if (this.gravity < 0) {
-            this.scene = 5;
-        } 
-    }
-    if (this.isDown == true && this.gravity == 0) {
         this.gravity = this.jumpHeight;
-    }
+        this.isDown = false;
+    } 
 }
 
 Hero.prototype.deathScene = function() {
