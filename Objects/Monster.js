@@ -37,7 +37,7 @@ Monster.prototype.collideByHero = function(hero, monsters, scoreBoard) {
         setTimeout(() => { 
             monsters.splice(monsters.indexOf(this), 1);
             scoreBoard.addScore();
-        }, 1000);
+        }, 1750);
     } else if (
         this.x < hero.x + hero.width &&
         this.x + this.width > hero.x &&
@@ -48,7 +48,7 @@ Monster.prototype.collideByHero = function(hero, monsters, scoreBoard) {
         hero.deathScene();
         setTimeout(() => { 
             window.location.reload();
-        }, 1000);
+        }, 1750);
     }
 }
 

@@ -2,6 +2,7 @@ import { Level1 } from './levels/field0.js';
 import { Hero } from './Objects/Player.js';
 import { Monster } from './Objects/Monster.js';
 import { ScoreBoard } from './Objects/ScoreBoard.js';
+import { Win, Lose } from './message/msg.js';
 
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
@@ -50,11 +51,78 @@ heroSprite = new Image();
 heroSprite.src = 'assets/hero.png';
 heroSprite.onload = draw;
 
-function Game(scoreBoard, player, monsters, round) {
-    this.scoreBoard = scoreBoard;
-    this.player = player;
-    this.monsters = monsters;
-    this.round = round;
+class Game {
+    constructor(scoreBoard, player, monsters, round) {
+        this.scoreBoard = scoreBoard;
+        this.player = player;
+        this.monsters = monsters;
+        this.round = round;
+        this.loseText = Lose[Math.floor(Math.random() * Lose.length)];
+        this.winText = Win[Math.floor(Math.random() * Win.length)];
+    }
+    MainSplash() {
+        ctx.strokeStyle = "lightblue";
+        ctx.lineWidth = 5;
+        ctx.strokeRect(mapWidth/10, mapHeight/10, mapWidth-(mapWidth/10)*2, mapHeight-(mapHeight/10)*2);
+        let centerX = (mapWidth-(mapWidth/10))/2;
+        let centerY = (mapHeight-(mapHeight/10))/2+55;
+        ctx.drawImage(spider, 0, 0, 42, 32, centerX, centerY, 42, 32); 
+        ctx.drawImage(numbers, 80, 26, 20, 26, centerX+50, centerY, 20, 26);  
+        ctx.drawImage(numbers, 
+            this.scoreBoard.numPosition[Math.floor(this.scoreBoard.killPoint/10)][0],
+            this.scoreBoard.numPosition[Math.floor(this.scoreBoard.killPoint/10)][1],
+            20,
+            26,
+            centerX+80,
+            centerY,
+            20,
+            26
+        );  
+        ctx.drawImage(numbers, 
+            this.scoreBoard.numPosition[Math.floor(this.scoreBoard.killPoint%10)][0],
+            this.scoreBoard.numPosition[Math.floor(this.scoreBoard.killPoint%10)][1],
+            20,
+            26,
+            centerX+110,
+            centerY,
+            20,
+            26
+        );  
+    }
+    PlayerDeathSplash() {
+        ctx.fillStyle = "rgba(255, 0, 0, .6)";
+        ctx.fillRect(0, 0, mapWidth, mapHeight);
+        let centerX = mapWidth/2;
+        let centerY = (mapHeight-(mapHeight/10))/2;
+        ctx.textAlign = "center";
+        ctx.fillStyle = "lightblue";
+        ctx.font = "bold 36px gothic";
+        ctx.fillText("실패!", centerX, centerY-75);
+        ctx.fillStyle = "red";
+        ctx.fillText(this.loseText, centerX, centerY);
+        this.MainSplash();    
+    }
+    MonsterAllDeathSplash() {
+        ctx.fillStyle = "rgba(255, 255, 255, .6)";
+        ctx.fillRect(0, 0, mapWidth, mapHeight);
+        let centerX = mapWidth/2;
+        let centerY = (mapHeight-(mapHeight/10))/2;
+        ctx.textAlign = "center";
+        ctx.fillStyle = "lightblue";
+        ctx.font = "bold 36px gorhic";
+        ctx.fillText("성공!", centerX, centerY-75);
+        ctx.fillStyle = "blue";
+        ctx.fillText(this.winText, centerX, centerY);
+        this.MainSplash();    
+    }
+    GameStateCheck() {
+        if (this.player.isDeath == true) {
+            this.PlayerDeathSplash();
+        }
+        if (this.monsters.length == 0) {
+            this.MonsterAllDeathSplash();
+        }
+    }
 }
 
 function drawMap() {
@@ -99,32 +167,32 @@ function draw() {
     game.player.execGravity();
     game.player.mapCollision();
     game.player.collisionGrass(levelObj);
-    game.player.execjumpSprite();
     keyAction();
+    game.GameStateCheck();
 
-    if (hero.direction == -1) {
+    if (game.player.direction == -1) {
         ctx.scale(-1, 1);
         ctx.drawImage(heroSprite, 
-            hero.scene*hero.width, 
+            game.player.scene*game.player.width, 
             0, 
-            hero.width, 
-            hero.height, 
-            -hero.x - hero.width, 
-            hero.y, 
-            hero.width, 
-            hero.height
+            game.player.width, 
+            game.player.height, 
+            -game.player.x - game.player.width, 
+            game.player.y, 
+            game.player.width, 
+            game.player.height
         );
         ctx.scale(-1, 1);
     } else {
         ctx.drawImage(heroSprite, 
-            hero.scene*hero.width, 
+            game.player.scene*game.player.width, 
             0, 
-            hero.width, 
-            hero.height, 
-            hero.x, 
-            hero.y, 
-            hero.width, 
-            hero.height
+            game.player.width, 
+            game.player.height, 
+            game.player.x, 
+            game.player.y, 
+            game.player.width, 
+            game.player.height
         );
     }
 }
@@ -158,7 +226,7 @@ window.addEventListener('keydown', (e) => {
 }, false);
 
 window.addEventListener('keyup', (e) => { 
-    hero.stop();
+    game.player.stop();
     delete multikey[e.key];
 }, false);
 

@@ -20,14 +20,6 @@ function Hero(scene, x, y, width, height, speed, jumpHeight, gravity, gravitySpe
     this.pos = 2;
 }
 
-Hero.prototype.disableJump = function() {
-    this.isDown = false;
-} 
-
-Hero.prototype.enableJump = function() {
-    this.isDown = true;
-}
-
 Hero.prototype.collisionGrass = function(levelObj) {
     let heroPos = {
         x: this.x + Math.floor(this.width/2),
@@ -67,12 +59,14 @@ Hero.prototype.execGravity = function() {
 }
 
 Hero.prototype.jump = function() {
-    if (this.isDown == true && this.gravity == 0) {
-        this.gravity = this.jumpHeight;
+    if (this.isDeath == true) {
+        return;
     }
-}
-
-Hero.prototype.execjumpSprite = function () {
+    if (this.isDown == true) {
+        this.isDown = false;
+    } else {
+        this.isDown = true;
+    }
     if (this.isDown == false) {
         if (this.gravity <= -15) {
             this.scene = 3;
@@ -81,13 +75,15 @@ Hero.prototype.execjumpSprite = function () {
         } else if (this.gravity < 0) {
             this.scene = 5;
         } 
-    }   
+    }
+    if (this.isDown == true && this.gravity == 0) {
+        this.gravity = this.jumpHeight;
+    }
 }
 
 Hero.prototype.deathScene = function() {
     this.speed = 0;
     this.isDeath = true;
-    this.disableJump();
     if (this.deathSpritedelay++ % 14 == 0) {
         this.scene = this.deathSprite[this._deathSprite++ % this.deathSprite.length];
     }
