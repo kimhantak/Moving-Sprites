@@ -25,6 +25,33 @@ Monster.prototype.autoMove = function() {
     this.mPos += 2;
 }
 
+Monster.prototype.collideByHero = function(hero, monsters, scoreBoard) {
+    if (this.x < hero.x + hero.width &&
+        this.x + this.width > hero.x &&
+        this.y < hero.y + hero.height &&
+        this.height + this.y > hero.y && 
+        hero.gravity > 0 && this.isDeath == false) 
+    {
+        hero.gravity = -15;
+        this.deathScene();
+        setTimeout(() => { 
+            monsters.splice(monsters.indexOf(this), 1);
+            scoreBoard.addScore();
+        }, 1000);
+    } else if (
+        this.x < hero.x + hero.width &&
+        this.x + this.width > hero.x &&
+        this.y < hero.y + hero.height &&
+        this.height + this.y > hero.y && 
+        hero.gravity == 0 && this.isDeath == false) 
+    {
+        hero.deathScene();
+        setTimeout(() => { 
+            window.location.reload();
+        }, 1000);
+    }
+}
+
 Monster.prototype.mapCollision = function() {
     if (this.x + this.width > this.maxX) {
         this.x = this.maxX - this.width;

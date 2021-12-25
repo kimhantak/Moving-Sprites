@@ -28,6 +28,22 @@ Hero.prototype.enableJump = function() {
     this.isDown = true;
 }
 
+Hero.prototype.collisionGrass = function(levelObj) {
+    let heroPos = {
+        x: this.x + Math.floor(this.width/2),
+        y: this.y + this.height
+    };
+    levelObj.forEach((lv) => {
+        if ((heroPos.x >= lv[0] && heroPos.x <= lv[0]+lv[2]) 
+            && (this.y + this.height <= lv[1]+21 && this.y + this.height >= lv[1])) {
+            if (0 < this.gravity) {
+                this.y = lv[1] - this.height;
+                this.gravity = 0;
+            }
+        } 
+    });
+}
+
 Hero.prototype.move = function(direction) {
     this.direction = direction;
     this.x += this.speed*this.direction;
