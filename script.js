@@ -18,7 +18,7 @@ var mapHeight = canvas.height = window.innerHeight;
 
 // round
 var level = [Level1, Level2, Level3, Level4, Level5];
-var _level = 0;
+var _level = 4;
 var round = level[_level];
 
 // level objects
