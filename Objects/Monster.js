@@ -37,7 +37,7 @@ Monster.prototype.collideByHero = function(hero, monsters, scoreBoard) {
         setTimeout(() => { 
             monsters.splice(monsters.indexOf(this), 1);
             scoreBoard.addScore();
-        }, 1750);
+        }, 1500);
     } else if (
         this.x < hero.x + hero.width &&
         this.x + this.width > hero.x &&
@@ -48,7 +48,7 @@ Monster.prototype.collideByHero = function(hero, monsters, scoreBoard) {
         hero.deathScene();
         setTimeout(() => { 
             window.location.reload();
-        }, 1750);
+        }, 1500);
     }
 }
 
@@ -65,7 +65,7 @@ Monster.prototype.mapCollision = function() {
 Monster.prototype.deathScene = function() {
     this.speed = 0;
     this.isDeath = true;
-    if (this.deathSpritedelay++ % 7 == 0) {
+    if (this.deathSpritedelay++ % 10 == 0) {
         this.scene = this.deathSprite[this._deathSprite++ % this.deathSprite.length];
     }
 }

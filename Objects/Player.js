@@ -36,6 +36,12 @@ Hero.prototype.collisionGrass = function(levelObj) {
     });
 }
 
+Hero.prototype.drawName = function(ctx, name) {
+    ctx.fillStyle = "black";
+    ctx.font = "12px gothic";
+    ctx.fillText(name, this.x, this.y-12);
+}
+
 Hero.prototype.move = function(direction) {
     this.direction = direction;
     this.x += this.speed*this.direction;
@@ -84,7 +90,7 @@ Hero.prototype.jump = function() {
 Hero.prototype.deathScene = function() {
     this.speed = 0;
     this.isDeath = true;
-    if (this.deathSpritedelay++ % 14 == 0) {
+    if (this.deathSpritedelay++ % 10 == 0) {
         this.scene = this.deathSprite[this._deathSprite++ % this.deathSprite.length];
     }
 }

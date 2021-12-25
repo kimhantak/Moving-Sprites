@@ -4,6 +4,9 @@ import { Monster } from './Objects/Monster.js';
 import { ScoreBoard } from './Objects/ScoreBoard.js';
 import { Win, Lose } from './message/msg.js';
 
+var userName = "";
+userName = window.prompt("게임에 사용할 이름을 입력하라!", "John wick");
+
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
 var mapWidth = canvas.width = window.innerWidth;
@@ -167,6 +170,7 @@ function draw() {
     game.player.execGravity();
     game.player.mapCollision();
     game.player.collisionGrass(levelObj);
+    //game.player.drawName(ctx, userName);
     keyAction();
     game.GameStateCheck();
 
