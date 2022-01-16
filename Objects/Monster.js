@@ -1,3 +1,5 @@
+var killAudio = new Audio('sounds/coin.wav');
+
 function Monster(scene, x, y, width, height, speed, direction, lWall, rWall) {
     this.scene = scene;
     this.x = x;
@@ -35,6 +37,7 @@ Monster.prototype.collideByHero = function(game) {
         game.player.gravity = -15;
         this.deathScene();
         setTimeout(() => { 
+            killAudio.play();
             game.scoreBoard.addScore();
             game.monsters.splice(game.monsters.indexOf(this), 1);
             setTimeout(() => { 

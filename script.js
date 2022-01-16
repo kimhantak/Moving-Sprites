@@ -16,6 +16,8 @@ const ctx = canvas.getContext('2d');
 var mapWidth = canvas.width = window.innerWidth;
 var mapHeight = canvas.height = window.innerHeight;
 
+var jumpAudio = new Audio('sounds/jump.wav');
+
 // round
 var level = [Level1, Level2, Level3, Level4, Level5];
 var _level = 0;
@@ -156,6 +158,8 @@ function drawMap() {
 function keyAction() {
     if (multikey['w']) {
         hero.jump();
+        if (hero.isDown == false && hero.gravity < -19)
+            jumpAudio.play();
     }
     if (multikey['a']) {
         hero.move(-1);
