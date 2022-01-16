@@ -17,6 +17,19 @@ var mapWidth = canvas.width = window.innerWidth;
 var mapHeight = canvas.height = window.innerHeight;
 
 var jumpAudio = new Audio('sounds/jump.wav');
+var bgm = new Audio('sounds/bgm.mp3');
+bgm.muted = true;
+
+const checkbox = document.querySelector('#bgmCheck');
+checkbox.addEventListener('click', () => {
+    if (checkbox.checked) {
+        bgm.muted = false;
+        bgm.loop = true;
+        bgm.play();
+    } else {
+        bgm.pause();
+    }
+});
 
 // round
 var level = [Level1, Level2, Level3, Level4, Level5];

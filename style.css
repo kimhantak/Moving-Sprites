@@ -2,3 +2,16 @@ body {
     margin: 0;
     overflow: hidden;
 }
+
+.bgmController {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+}
+
+.bgmController p {
+    display: inline;
+    font-size: 12px;
+    font-weight: bold;
+    color: red;
+}
